@@ -1,0 +1,12 @@
+{
+  "name": "Nuxt Arch-Tailscale Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
+  "runArgs": ["--device=/dev/net/tun"],
+  "features": {
+    "ghcr.io/tailscale/codespace/tailscale": {
+      "version": "latest"
+    }
+  },
+  "postStartCommand": "bash .devcontainer/setup-tailscale.sh",
+  "postCreateCommand": "npm install"
+}
