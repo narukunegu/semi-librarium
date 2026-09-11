@@ -1,41 +1,27 @@
-# Nuxt Minimal Starter
+# Semi Librarium
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Online OPAC and Library Portal for the Archdiocese of Saigon Seminary Library (Đại Chủng Viện Thánh Giuse Sài Gòn), built with Nuxt 4, Vue 3, and Tailwind CSS.
+
+## Tech Stack
+
+- **Framework**: Nuxt 4 (Vue 3, Vite, Nitro)
+- **Styling**: Tailwind CSS (`@nuxtjs/tailwindcss`)
+- **Data Source**: Client-side async fetching from Beeceptor mock API (`https://semi-library.free.beeceptor.com`) and local assets.
 
 ## Setup
 
-Make sure to install dependencies:
+Install dependencies:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Development
 
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
 ## Production
@@ -43,33 +29,11 @@ bun run dev
 Build the application for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Locally preview the production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
