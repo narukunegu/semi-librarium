@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import sampleData from "~/assets/data/sample.json";
+const booksData = await import("~/assets/data/books.json");
 
 interface BookItem {
   "Chu de Tong quat": string;
@@ -23,39 +23,157 @@ interface ResultEntry {
 }
 
 interface RawData {
-  results: Array<ResultEntry>;
+  books: ResultEntry[];
 }
 
 const route = useRoute();
-const searchQuery = ref("");
+const searchQuery = ref((route.query.q as string) || "");
+
+useHead({
+  title: computed(() =>
+    route.query.q
+      ? `Kết quả tìm kiếm "${route.query.q}" | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn`
+      : `Tra cứu danh mục sách | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn`,
+  ),
+});
 const selectedLanguage = ref("all");
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 
-// Giả lập API Server Fetch Data (Lazy loading với useAsyncData)
-const { data: rawResults, pending } = await useAsyncData<ResultEntry[]>(
-  "books-search",
+// Giả lập API Server Fetch Data (Chỉ fetch khi có query hợp lệ)
+const {
+  data: rawResults,
+  pending,
+  error,
+  refresh,
+} = await useAsyncData<ResultEntry[]>(
+  () => "books-search-" + (route.query.q || "all"),
   async () => {
-    // Giả lập network latency 600ms như server thật
-    searchQuery.value = route.query.q as string;
-    const response: RawData = await $fetch(
-      "https://semi-library.free.beeceptor.com/books?q=" + searchQuery.value,
-    );
-    return response.results as ResultEntry[];
+    const q = route.query.q as string;
+    if (!q) {
+      return [];
+    }
+    searchQuery.value = q;
+    //const response: RawData = await $fetch(
+    //  "https://semi-library.free.beeceptor.com/books?q=" + q,
+    //);
+    //return response.books as ResultEntry[];
+    return booksData.books as ResultEntry[];
   },
-  { lazy: true, server: false },
 );
 
-// Trả về danh sách đã lọc theo từ khóa & ngôn ngữ
+const selectedSubject = ref("all");
+const selectedYearRange = ref("all");
+const sortBy = ref("relevance");
+
+const availableLanguages = computed(() => {
+  if (!rawResults.value) return [];
+  const langs = new Map<string, number>();
+  rawResults.value.forEach((r) => {
+    const lang = r.item["Ngon ngu"];
+    if (lang) {
+      langs.set(lang, (langs.get(lang) || 0) + 1);
+    }
+  });
+  return Array.from(langs.entries())
+    .map(([code, count]) => {
+      const c = code.trim().toLowerCase();
+      let label = `Ngôn ngữ (${code})`;
+      if (c === "p" || c === "fr" || c === "french") label = "Tiếng Pháp (P)";
+      else if (c === "v" || c === "vi" || c === "vietnamese") label = "Tiếng Việt (V)";
+      else if (c === "a" || c === "en" || c === "english") label = "Tiếng Anh (A)";
+      return { code, label, count };
+    })
+    .sort((a, b) => b.count - a.count);
+});
+
+const availableSubjects = computed(() => {
+  if (!rawResults.value) return [];
+  const subjects = new Set<string>();
+  rawResults.value.forEach((r) => {
+    if (r.item["Chu de Tong quat"]) {
+      subjects.add(r.item["Chu de Tong quat"]);
+    }
+  });
+  return Array.from(subjects);
+});
+
+const availableYearRanges = computed(() => {
+  if (!rawResults.value) return [];
+  const years: number[] = [];
+  rawResults.value.forEach((r) => {
+    const y = parseInt(r.item["Nam Xb"]);
+    if (!isNaN(y) && y > 0) {
+      years.push(y);
+    }
+  });
+
+  const ranges = [{ id: "all", label: "Tất cả các năm" }];
+  if (years.length > 0) {
+    const minYear = Math.min(...years);
+    const maxYear = Math.max(...years);
+
+    if (minYear < 2000 || years.some((y) => y < 2000)) {
+      ranges.push({ id: "before2000", label: "Trước năm 2000" });
+    }
+    if (years.some((y) => y >= 2000 && y <= 2010)) {
+      ranges.push({ id: "2000to2010", label: "2000 – 2010" });
+    }
+    if (maxYear > 2010 || years.some((y) => y > 2010)) {
+      ranges.push({ id: "after2010", label: "Sau năm 2010" });
+    }
+  } else {
+    ranges.push(
+      { id: "before2000", label: "Trước năm 2000" },
+      { id: "2000to2010", label: "2000 – 2010" },
+      { id: "after2010", label: "Sau năm 2010" },
+    );
+  }
+
+  return ranges;
+});
+
+// Trả về danh sách đã lọc theo từ khóa, ngôn ngữ, chủ đề, năm xuất bản & sắp xếp
 const filteredResults = computed(() => {
   if (!rawResults.value) return [];
 
-  return rawResults.value.filter(({ item }) => {
-    return (
+  let results = rawResults.value.filter(({ item }) => {
+    const matchesLang =
       selectedLanguage.value === "all" ||
-      item["Ngon ngu"] === selectedLanguage.value
-    );
+      item["Ngon ngu"] === selectedLanguage.value;
+    const matchesSubject =
+      selectedSubject.value === "all" ||
+      item["Chu de Tong quat"] === selectedSubject.value;
+
+    let matchesYear = true;
+    if (selectedYearRange.value !== "all") {
+      const year = parseInt(item["Nam Xb"]) || 0;
+      if (selectedYearRange.value === "before2000") matchesYear = year < 2000;
+      else if (selectedYearRange.value === "2000to2010")
+        matchesYear = year >= 2000 && year <= 2010;
+      else if (selectedYearRange.value === "after2010")
+        matchesYear = year > 2010;
+    }
+
+    return matchesLang && matchesSubject && matchesYear;
   });
+
+  // Sorting
+  if (sortBy.value === "yearNewest") {
+    results.sort(
+      (a, b) =>
+        (parseInt(b.item["Nam Xb"]) || 0) - (parseInt(a.item["Nam Xb"]) || 0),
+    );
+  } else if (sortBy.value === "yearOldest") {
+    results.sort(
+      (a, b) =>
+        (parseInt(a.item["Nam Xb"]) || 0) - (parseInt(b.item["Nam Xb"]) || 0),
+    );
+  } else if (sortBy.value === "titleAZ") {
+    results.sort((a, b) => (a.item.Tua || "").localeCompare(b.item.Tua || ""));
+  }
+
+  return results;
 });
 
 // Tính toán phân trang
@@ -69,14 +187,68 @@ const paginatedResults = computed(() => {
 });
 
 // Reset về trang 1 khi đổi từ khóa hoặc bộ lọc
-watch([searchQuery, selectedLanguage, itemsPerPage], () => {
-  currentPage.value = 1;
-});
+watch(
+  [
+    searchQuery,
+    selectedLanguage,
+    selectedSubject,
+    selectedYearRange,
+    sortBy,
+    itemsPerPage,
+  ],
+  () => {
+    currentPage.value = 1;
+  },
+);
+
+// Helper function to format book language
+const formatLanguage = (langCode: string) => {
+  if (!langCode) return "";
+  const code = langCode.trim().toLowerCase();
+  if (code === "p" || code === "fr" || code === "french") return "Tiếng Pháp";
+  if (code === "v" || code === "vi" || code === "vietnamese") return "Tiếng Việt";
+  if (code === "a" || code === "en" || code === "english") return "Tiếng Anh";
+  return langCode;
+};
 
 // Thống kê số lượng sách có thể mượn (Tinh trang === "0")
 const availableCount = computed(() => {
   return filteredResults.value.filter((r) => r.item["Tinh trang"] === "0")
     .length;
+});
+
+// Phân trang thông minh với dấu ...
+const displayedPages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const delta = 2;
+  const range: (number | string)[] = [];
+  const rangeWithDots: (number | string)[] = [];
+  let l: number | undefined;
+
+  range.push(1);
+  for (let i = current - delta; i <= current + delta; i++) {
+    if (i < total && i > 1) {
+      range.push(i);
+    }
+  }
+  if (total > 1) {
+    range.push(total);
+  }
+
+  for (const i of range) {
+    if (l) {
+      if (typeof i === "number" && i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (typeof i === "number" && i - l !== 1) {
+        rangeWithDots.push("...");
+      }
+    }
+    rangeWithDots.push(i);
+    l = typeof i === "number" ? i : l;
+  }
+
+  return rangeWithDots;
 });
 </script>
 
@@ -84,6 +256,43 @@ const availableCount = computed(() => {
   <div
     class="min-h-screen bg-[#fafafa] font-sans text-gray-800 flex flex-col text-base"
   >
+    <!-- Error Banner -->
+    <div v-if="error" class="w-full col-span-full">
+      <div
+        class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      >
+        <div class="flex items-center gap-3">
+          <svg
+            class="w-6 h-6 text-rose-500 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <div>
+            <h3 class="font-bold text-sm">
+              Không thể kết nối hoặc tải dữ liệu từ máy chủ thư viện
+            </h3>
+            <p class="text-xs text-rose-600">
+              Vui lòng kiểm tra lại đường truyền hoặc thử lại sau.
+            </p>
+          </div>
+        </div>
+        <button
+          @click="refresh()"
+          class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded shadow transition flex-shrink-0"
+        >
+          Thử lại
+        </button>
+      </div>
+    </div>
+
     <!-- Header -->
     <SiteHeader />
 
@@ -120,64 +329,101 @@ const availableCount = computed(() => {
     >
       <!-- Facet Sidebar -->
       <aside class="w-full lg:w-72 flex-shrink-0 space-y-6">
-        <div class="bg-white p-5 rounded-lg shadow-sm border border-[#e4e4e4]">
-          <h3
-            class="font-bold text-base text-[#40596c] uppercase tracking-wider mb-4 pb-2 border-b border-[#e4e4e4]"
-          >
-            Lọc kết quả
-          </h3>
-          <ul class="space-y-3 text-base text-gray-700">
-            <li
-              @click="selectedLanguage = 'all'"
-              :class="{
-                'font-semibold text-[#40596c]': selectedLanguage === 'all',
-              }"
-              class="flex justify-between items-center cursor-pointer hover:text-[#40596c]"
+        <div
+          class="bg-white p-5 rounded-lg shadow-sm border border-[#e4e4e4] space-y-6"
+        >
+          <div>
+            <h3
+              class="font-bold text-base text-[#40596c] uppercase tracking-wider mb-4 pb-2 border-b border-[#e4e4e4]"
             >
-              <span>Tất cả ngôn ngữ</span>
-              <span
-                class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600"
-              >
-                {{ rawResults?.length || 0 }}
-              </span>
-            </li>
-            <li
-              @click="selectedLanguage = 'P'"
-              :class="{
-                'font-semibold text-[#40596c]': selectedLanguage === 'P',
-              }"
-              class="flex justify-between items-center cursor-pointer hover:text-[#40596c]"
-            >
-              <span>Tiếng Pháp (P)</span>
-              <span
-                class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600"
-              >
-                {{
-                  rawResults?.filter((r) => r.item["Ngon ngu"] === "P")
-                    .length || 0
-                }}
-              </span>
-            </li>
-            <li
-              @click="selectedLanguage = 'V'"
-              :class="{
-                'font-semibold text-[#40596c]': selectedLanguage === 'V',
-              }"
-              class="flex justify-between items-center cursor-pointer hover:text-[#40596c]"
-            >
-              <span>Tiếng Việt (V)</span>
-              <span
-                class="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600"
-              >
-                {{
-                  rawResults?.filter((r) => r.item["Ngon ngu"] === "V")
-                    .length || 0
-                }}
-              </span>
-            </li>
-          </ul>
+              Lọc kết quả
+            </h3>
 
-          <div class="mt-6 pt-4 border-t border-[#e4e4e4]">
+            <!-- Language Filter -->
+            <div class="space-y-2">
+              <span
+                class="text-xs font-semibold text-gray-500 uppercase tracking-wider block"
+                >Ngôn ngữ</span
+              >
+              <ul class="space-y-2 text-sm text-gray-700">
+                <li
+                  @click="selectedLanguage = 'all'"
+                  :class="{
+                    'font-semibold text-[#40596c] bg-slate-50 px-2 py-1 rounded':
+                      selectedLanguage === 'all',
+                  }"
+                  class="flex justify-between items-center cursor-pointer hover:text-[#40596c]"
+                >
+                  <span>Tất cả ngôn ngữ</span>
+                  <span
+                    class="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600"
+                  >
+                    {{ rawResults?.length || 0 }}
+                  </span>
+                </li>
+                <li
+                  v-for="lang in availableLanguages"
+                  :key="lang.code"
+                  @click="selectedLanguage = lang.code"
+                  :class="{
+                    'font-semibold text-[#40596c] bg-slate-50 px-2 py-1 rounded':
+                      selectedLanguage === lang.code,
+                  }"
+                  class="flex justify-between items-center cursor-pointer hover:text-[#40596c]"
+                >
+                  <span>{{ lang.label }}</span>
+                  <span
+                    class="text-xs bg-gray-100 px-2 py-0.5 rounded-full text-gray-600"
+                  >
+                    {{ lang.count }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Subject Category Filter -->
+            <div class="space-y-2 mt-5">
+              <span
+                class="text-xs font-semibold text-gray-500 uppercase tracking-wider block"
+                >Chủ đề tổng quát</span
+              >
+              <select
+                v-model="selectedSubject"
+                class="w-full text-sm border border-gray-300 rounded px-2.5 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-[#40596c]"
+              >
+                <option value="all">Tất cả chủ đề</option>
+                <option
+                  v-for="subj in availableSubjects"
+                  :key="subj"
+                  :value="subj"
+                >
+                  {{ subj }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Publication Year Range Filter -->
+            <div class="space-y-2 mt-5">
+              <span
+                class="text-xs font-semibold text-gray-500 uppercase tracking-wider block"
+                >Năm xuất bản</span
+              >
+              <select
+                v-model="selectedYearRange"
+                class="w-full text-sm border border-gray-300 rounded px-2.5 py-2 bg-white focus:outline-none focus:ring-1 focus:ring-[#40596c]"
+              >
+                <option
+                  v-for="range in availableYearRanges"
+                  :key="range.id"
+                  :value="range.id"
+                >
+                  {{ range.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-[#e4e4e4]">
             <p class="text-sm text-gray-500">
               Sách có sẵn:
               <strong class="text-emerald-700">{{ availableCount }}</strong>
@@ -199,6 +445,24 @@ const availableCount = computed(() => {
           </span>
 
           <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+              <label
+                for="sortBy"
+                class="text-xs text-gray-500 uppercase font-bold"
+                >Sắp xếp:</label
+              >
+              <select
+                id="sortBy"
+                v-model="sortBy"
+                class="text-sm border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none"
+              >
+                <option value="relevance">Mặc định (Độ liên quan)</option>
+                <option value="yearNewest">Năm xuất bản (Mới nhất)</option>
+                <option value="yearOldest">Năm xuất bản (Cũ nhất)</option>
+                <option value="titleAZ">Tựa đề (A - Z)</option>
+              </select>
+            </div>
+
             <div class="flex items-center space-x-2">
               <label
                 for="perPage"
@@ -284,10 +548,30 @@ const availableCount = computed(() => {
               >
                 <img
                   :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${res.item['So Tai san']}.jpg`"
-                  :alt="res.item.Tua"
                   class="object-cover w-full h-full absolute inset-0 z-10"
-                  @error="(e: Event) => { (e.target as HTMLElement).style.display = 'none'; }"
+                  @error="
+                    (e: Event) => {
+                      const target = e.target as HTMLElement;
+                      target.style.display = 'none';
+                      const pseudo = target.nextElementSibling as HTMLElement;
+                      if (pseudo) pseudo.style.display = 'flex';
+                    }
+                  "
                 />
+                <div
+                  class="absolute inset-0 flex flex-col items-center justify-center p-2 z-0 bg-gradient-to-br from-slate-50 to-slate-200 text-slate-700"
+                  style="display: none"
+                >
+                  <span
+                    class="text-[9px] font-bold text-academic-burgundy uppercase tracking-wider mb-0.5"
+                    >Thư Viện</span
+                  >
+                  <p
+                    class="text-[10px] font-serif font-bold line-clamp-3 leading-tight text-[#35536c]"
+                  >
+                    {{ res.item.Tua }}
+                  </p>
+                </div>
                 <div
                   class="absolute inset-0 flex flex-col items-center justify-center p-2 z-0 bg-slate-100"
                 >
@@ -364,11 +648,7 @@ const availableCount = computed(() => {
                     >
                     <span v-if="res.item['Ngon ngu']">
                       <strong>Ngôn ngữ:</strong>
-                      {{
-                        res.item["Ngon ngu"] === "P"
-                          ? "Tiếng Pháp"
-                          : "Tiếng Việt"
-                      }}
+                      {{ formatLanguage(res.item['Ngon ngu']) }}
                     </span>
                   </div>
                 </div>
@@ -413,7 +693,7 @@ const availableCount = computed(() => {
         <!-- Pagination Controls -->
         <div
           v-if="totalPages > 1 && !pending"
-          class="flex justify-center items-center gap-2 pt-6"
+          class="flex justify-center items-center gap-1.5 pt-6 flex-wrap"
         >
           <button
             @click="currentPage--"
@@ -423,19 +703,23 @@ const availableCount = computed(() => {
             Trước
           </button>
 
-          <button
-            v-for="page in totalPages"
-            :key="page"
-            @click="currentPage = page"
-            :class="[
-              'px-3.5 py-1.5 rounded text-sm font-medium border transition',
-              currentPage === page
-                ? 'bg-[#40596c] text-white border-[#40596c]'
-                : 'bg-white border-gray-300 hover:bg-gray-50',
-            ]"
-          >
-            {{ page }}
-          </button>
+          <template v-for="(page, idx) in displayedPages" :key="idx">
+            <span v-if="page === '...'" class="px-2 text-gray-500 select-none"
+              >...</span
+            >
+            <button
+              v-else
+              @click="currentPage = Number(page)"
+              :class="[
+                'px-3.5 py-1.5 rounded text-sm font-medium border transition',
+                currentPage === page
+                  ? 'bg-[#40596c] text-white border-[#40596c]'
+                  : 'bg-white border-gray-300 hover:bg-gray-50',
+              ]"
+            >
+              {{ page }}
+            </button>
+          </template>
 
           <button
             @click="currentPage++"

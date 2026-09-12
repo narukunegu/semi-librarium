@@ -41,17 +41,18 @@ const mobileMenuOpen = ref(false);
           class="hover:text-amber-200 transition-colors pb-1"
           exactActiveClass="border-b-2 border-white"
         >
-          Thông Tin
+          Giới Thiệu
         </NuxtLink>
       </nav>
 
       <!-- Account & Actions / Mobile Menu Button -->
       <div class="flex items-center space-x-3 text-sm">
-        <button
+        <NuxtLink
           class="hidden sm:inline-block px-3 py-1.5 rounded bg-black/20 hover:bg-black/30 transition-colors"
+          to="/bookshelf"
         >
-          Đăng Nhập
-        </button>
+          Kệ sách cá nhân
+        </NuxtLink>
 
         <!-- Mobile Hamburger Toggle -->
         <button
@@ -59,22 +60,49 @@ const mobileMenuOpen = ref(false);
           class="md:hidden p-2 rounded hover:bg-black/20 transition-colors"
           aria-label="Toggle menu"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              v-if="!mobileMenuOpen"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+            <path
+              v-else
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
     </div>
 
     <!-- Mobile Dropdown Menu -->
-    <div v-if="mobileMenuOpen" class="md:hidden bg-[#40596c] border-t border-[#53738c] px-4 py-4 space-y-3">
+    <div
+      v-if="mobileMenuOpen"
+      class="md:hidden bg-[#40596c] border-t border-[#53738c] px-4 py-4 space-y-3"
+    >
       <NuxtLink
         to="/search"
         @click="mobileMenuOpen = false"
         class="block py-2 text-sm font-medium hover:text-amber-200"
       >
         Tìm Sách
+      </NuxtLink>
+      <NuxtLink
+        to="/shelf"
+        @click="mobileMenuOpen = false"
+        class="block py-2 text-sm font-medium hover:text-amber-200"
+      >
+        Kệ Sách Của Tôi
       </NuxtLink>
       <NuxtLink
         to="/articles"

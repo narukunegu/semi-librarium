@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
+
+useHead({
+  title: "Giới Thiệu | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
+});
 </script>
 
 <template>

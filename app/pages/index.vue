@@ -1,10 +1,13 @@
 <template>
   <div
-    class="relative flex-1 bg-background text-foreground font-sans transition-colors duration-200"
+    class="relative flex-1 bg-background text-foreground font-sans transition-colors duration-200 flex flex-col min-h-screen"
   >
+    <SiteHeader />
+
     <main
       data-clonetohtml-wf-revealed="true"
       style="opacity: 1; visibility: visible"
+      class="flex-1"
     >
       <!-- Hero & Catalogue Search Section (Chỉnh sửa phủ kín 1 màn hình viewport) -->
       <section
@@ -29,14 +32,21 @@
         >
           <div class="w-full max-w-2xl animate-launch space-y-6">
             <div class="space-y-2">
-              <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2">
+              <span
+                class="inline-block px-3 py-1 rounded-full text-sm font-semibold tracking-widest uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2"
+              >
                 Đại Chủng Viện Thánh Giuse Sài Gòn
               </span>
-              <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md">
-                Kho Tàng Tri Thức Thần Học & Triết Học
+              <h1
+                class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md"
+              >
+                Kho Tàng Tri Thức
               </h1>
-              <p class="text-base sm:text-lg text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed">
-                Tra cứu hơn 70.000 đầu sách, tài liệu chuyên khảo và ấn bản quý hiếm phục vụ học tập & nghiên cứu.
+              <p
+                class="text-base sm:text-lg text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
+              >
+                Tra cứu hơn 70.000 đầu sách, tài liệu và ấn bản chuyên khảo phục
+                vụ học tập & nghiên cứu.
               </p>
             </div>
 
@@ -84,10 +94,18 @@
             </form>
 
             <!-- Quick Suggestion Tags / Pills -->
-            <div class="flex flex-wrap items-center justify-center gap-2 text-xs pt-1">
-              <span class="text-white/70 font-medium mr-1">Khám phá nhanh:</span>
+            <div
+              class="flex flex-wrap items-center justify-center gap-2 text-xs pt-1"
+            >
+              <span class="text-white/70 font-medium mr-1">Tìm nhanh:</span>
               <NuxtLink
-                v-for="tag in ['Kinh Thánh', 'Thần học', 'Triết học', 'Giáo luật', 'Lịch sử']"
+                v-for="tag in [
+                  'Kinh Thánh',
+                  'Thần học',
+                  'Triết học',
+                  'Giáo luật',
+                  'Lịch sử',
+                ]"
                 :key="tag"
                 :to="'/search?q=' + tag"
                 class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/25 text-white backdrop-blur-sm border border-white/20 transition-all font-medium"
@@ -143,7 +161,7 @@
                   >
                     <div class="flex flex-col items-center">
                       <h3
-                        class="font-serif font-bold text-foreground text-lg mb-1.5 tracking-tight"
+                        class="font-serif font-bold text-foreground text-xl mb-1.5 tracking-tight"
                       >
                         {{ formattedCurrentDate }}
                       </h3>
@@ -157,7 +175,7 @@
                           <span
                             class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"
                           ></span>
-                          Mở cửa (Đóng lúc {{ closingTimeLabel }})
+                          Mở cửa (đến {{ closingTimeLabel }})
                         </span>
                         <span
                           v-else
@@ -178,7 +196,7 @@
                     class="bg-border/80 w-[1px] h-14 self-center shrink-0 hidden sm:block"
                   ></div>
 
-                   <!-- Location Info -->
+                  <!-- Location Info -->
                   <div
                     class="py-2 px-4 flex-1 flex items-center justify-center relative z-10"
                   >
@@ -229,7 +247,7 @@
           <div class="col-span-12 lg:col-span-10 lg:col-start-2 relative">
             <!-- Pattern trang trí chìm phía sau -->
             <div
-              class="absolute inset-0 -z-10 rounded-xl opacity-30 dark:opacity-10 pointer-events-none"
+              class="absolute inset-0 -z-10 rounded-xl opacity-80 dark:opacity-80 pointer-events-none"
               style="
                 background-image: url(&quot;https://biblioteca.biblico.it/images/bg-pattern-1.png&quot;);
                 background-size: 280px;
@@ -300,9 +318,14 @@
 
         <div class="container mx-auto px-4 mb-12 relative z-10">
           <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div
+              class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+            >
               <div class="prose">
-                <span class="text-xs uppercase font-bold tracking-widest text-primary mb-1 block">Tài liệu & Hướng dẫn</span>
+                <span
+                  class="text-xs uppercase font-bold tracking-widest text-primary mb-1 block"
+                  >Tài liệu & Hướng dẫn</span
+                >
                 <h2
                   class="font-serif text-3xl font-bold tracking-tight text-foreground"
                 >
@@ -458,10 +481,10 @@
             class="col-span-12 lg:col-span-6 flex justify-center items-center relative min-h-[260px]"
           >
             <div
-              class="w-full max-w-sm opacity-20 hover:opacity-30 transition-opacity duration-500"
+              class="w-full max-w-sm opacity-50 hover:opacity-80 transition-opacity duration-500"
             >
               <img
-                alt="Biblicum Crest"
+                alt="Saigon Seminary Crest"
                 width="800"
                 height="800"
                 decoding="async"
@@ -478,6 +501,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import SiteHeader from "~/components/SiteHeader.vue";
+
+useHead({
+  title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
+});
 
 const query = ref("");
 const now = ref(new Date());

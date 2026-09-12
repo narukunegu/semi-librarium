@@ -1,6 +1,11 @@
 <script setup lang="ts">
+//const bookData = await import("~/assets/data/book.json");
+
 import { ref, computed } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
+import { useResearchShelf } from "~/composables/useResearchShelf";
+
+const { toggleSaveBook, isSaved } = useResearchShelf();
 
 interface BookItem {
   "Tu dien": string;
@@ -28,31 +33,39 @@ interface BookItem {
   NS: Array<Object>;
 }
 
-interface ResultEntry {
-  item: BookItem;
-  refIndex: number;
+interface rawData {
+  book: BookItem;
 }
 
 const route = useRoute();
 const copied = ref(false);
 
-const { data: book, pending } = await useAsyncData<ResultEntry>(
-  "book-detail",
+useHead({
+  title: `Chi tiết ấn phẩm | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn`,
+});
+
+const {
+  data: book,
+  pending,
+  error,
+  refresh,
+} = await useAsyncData<BookItem>(
+  () => "book-detail-" + route.params.id,
   async () => {
-    const response: ResultEntry = await $fetch(
+    const response: rawData = await $fetch(
       "https://semi-library.free.beeceptor.com/book/" + route.params.id,
     );
 
-    return response as ResultEntry;
+    return response.book as BookItem;
   },
-  { lazy: true, server: false },
 );
 
 const activeTab = ref("summary");
+const isIndexExpanded = ref(false);
 
 const citationAPA = computed(() => {
-  if (!book?.value?.item) return "";
-  const item = book.value.item;
+  if (!book.value) return "";
+  const item = book.value;
   const author =
     `${item["Ho Tac gia"] || ""} ${item["Ten Tac gia"] || ""}`.trim() ||
     "Tác giả ẩn danh";
@@ -64,8 +77,8 @@ const citationAPA = computed(() => {
 });
 
 const citationMLA = computed(() => {
-  if (!book?.value?.item) return "";
-  const item = book.value.item;
+  if (!book.value) return "";
+  const item = book.value;
   const author =
     `${item["Ho Tac gia"] || ""}, ${item["Ten Tac gia"] || ""}`.trim();
   const title = item["Tua"] || "Không rõ tên sách";
@@ -75,8 +88,8 @@ const citationMLA = computed(() => {
 });
 
 const citationChicago = computed(() => {
-  if (!book?.value?.item) return "";
-  const item = book.value.item;
+  if (!book.value) return "";
+  const item = book.value;
   const author =
     `${item["Ten Tac gia"] || ""} ${item["Ho Tac gia"] || ""}`.trim() ||
     "Tác giả ẩn danh";
@@ -92,8 +105,8 @@ const citationChicago = computed(() => {
 });
 
 const citationTurabian = computed(() => {
-  if (!book?.value?.item) return "";
-  const item = book.value.item;
+  if (!book.value) return "";
+  const item = book.value;
   const author =
     `${item["Ten Tac gia"] || ""} ${item["Ho Tac gia"] || ""}`.trim() ||
     "Tác giả ẩn danh";
@@ -130,6 +143,43 @@ const handleBorrow = () => {
     id="primoExploreRoot"
     class="min-h-screen bg-[#fafafa] font-roboto text-[#444] antialiased"
   >
+    <!-- Error Banner -->
+    <div v-if="error" class="w-full">
+      <div
+        class="bg-rose-50 border border-rose-200 text-rose-800 px-5 py-4 rounded-xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      >
+        <div class="flex items-center gap-3">
+          <svg
+            class="w-6 h-6 text-rose-500 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <div>
+            <h3 class="font-bold text-sm">
+              Không thể kết nối hoặc tải dữ liệu chi tiết ấn phẩm từ máy chủ API
+            </h3>
+            <p class="text-xs text-rose-600">
+              Vui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.
+            </p>
+          </div>
+        </div>
+        <button
+          @click="refresh()"
+          class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded shadow transition flex-shrink-0"
+        >
+          Thử lại
+        </button>
+      </div>
+    </div>
+
     <SiteHeader />
 
     <!-- Main Detail Container -->
@@ -145,16 +195,44 @@ const handleBorrow = () => {
               class="w-36 h-48 bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300 rounded-md shadow-md flex flex-col items-center justify-center p-3 text-center relative overflow-hidden group"
             >
               <img
-                v-if="book?.item"
-                :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${book.item['So Tai san']}.jpg`"
-                :alt="book.item['Tua']"
+                v-if="book"
+                :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${book['So Tai san']}.jpg`"
                 class="object-cover w-full h-full absolute inset-0 z-10"
-                @error="(e: Event) => { (e.target as HTMLElement).style.display = 'none'; }"
+                @error="
+                  (e: Event) => {
+                    const target = e.target as HTMLElement;
+                    target.style.display = 'none';
+                    const pseudo = target.nextElementSibling as HTMLElement;
+                    if (pseudo) pseudo.style.display = 'flex';
+                  }
+                "
               />
+              <div
+                class="absolute inset-0 flex flex-col items-center justify-center p-4 z-5 bg-gradient-to-br from-amber-50 via-slate-100 to-slate-200 text-center"
+                style="display: none"
+              >
+                <div
+                  class="absolute left-0 top-0 bottom-0 w-2 bg-academic-burgundy"
+                ></div>
+                <span
+                  class="text-[10px] font-bold text-academic-burgundy uppercase tracking-widest mb-1"
+                  >Ấn Bản Quý</span
+                >
+                <p
+                  class="text-xs font-serif font-bold text-[#35536c] line-clamp-4 leading-snug"
+                >
+                  {{ book!["Tua"] }}
+                </p>
+                <span class="text-[9px] text-slate-500 mt-2 font-mono"
+                  >ID: {{ book!["So Tai san"] }}</span
+                >
+              </div>
               <div
                 class="absolute left-0 top-0 bottom-0 w-2 bg-[#40596c]/30 z-20"
               ></div>
-              <div class="absolute inset-0 flex flex-col items-center justify-center p-3 z-0 bg-slate-100">
+              <div
+                class="absolute inset-0 flex flex-col items-center justify-center p-3 z-0 bg-slate-100"
+              >
                 <svg
                   class="w-10 h-10 text-slate-400 mb-2 group-hover:scale-110 transition-transform"
                   fill="none"
@@ -171,15 +249,15 @@ const handleBorrow = () => {
                 <span
                   class="text-[11px] text-slate-600 font-semibold line-clamp-3 leading-tight uppercase"
                 >
-                  {{ book?.item["Tua"] }}
+                  {{ book!["Tua"] }}
                 </span>
               </div>
             </div>
 
             <!-- Tình trạng mượn -->
-            <div v-if="book?.item" class="w-full">
+            <div v-if="book" class="w-full">
               <div
-                v-if="book.item['Tinh trang'] === '0'"
+                v-if="book['Tinh trang'] === '0'"
                 class="w-full text-center py-1.5 px-3 rounded bg-emerald-50 text-emerald-700 font-semibold text-xs border border-emerald-200 flex items-center justify-center gap-1.5"
               >
                 <span
@@ -207,35 +285,33 @@ const handleBorrow = () => {
                   SÁCH THƯ VIỆN
                 </span>
                 <span
-                  v-if="book?.item['Ngon ngu']"
+                  v-if="book!['Ngon ngu']"
                   class="text-xs text-slate-500 font-medium"
                 >
                   Ngôn ngữ:
-                  {{
-                    book.item["Ngon ngu"] === "P" ? "Tiếng Pháp" : "Tiếng Việt"
-                  }}
+                  {{ book!["Ngon ngu"] === "P" ? "Tiếng Pháp" : "Tiếng Việt" }}
                 </span>
               </div>
 
               <h1
                 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-3"
               >
-                {{ book?.item["Tua"] }}
+                {{ book!["Tua"] }}
               </h1>
 
               <div class="text-base text-gray-700 space-y-1">
-                <p v-if="book?.item['Ten Tac gia']">
+                <p v-if="book!['Ten Tac gia']">
                   <span class="font-semibold text-gray-900">Tác giả:</span>
-                  {{ book.item["Ho Tac gia"] }} {{ book.item["Ten Tac gia"] }}
+                  {{ book!["Ho Tac gia"] }} {{ book!["Ten Tac gia"] }}
                 </p>
-                <p v-if="book?.item['Nha Xb']">
+                <p v-if="book!['Nha Xb']">
                   <span class="font-semibold text-gray-900">Nhà xuất bản:</span>
-                  {{ book.item["Noi Xb"] }} : {{ book.item["Nha Xb"] }},
-                  {{ book.item["Nam Xb"] }}
+                  {{ book!["Noi Xb"] }} : {{ book!["Nha Xb"] }},
+                  {{ book!["Nam Xb"] }}
                 </p>
-                <p v-if="book?.item['So trang']">
+                <p v-if="book!['So trang']">
                   <span class="font-semibold text-gray-900">Số trang:</span>
-                  {{ book.item["So trang"] }} trang
+                  {{ book!["So trang"] }} trang
                 </p>
               </div>
             </div>
@@ -243,22 +319,22 @@ const handleBorrow = () => {
             <!-- Call Number / Classification Badges -->
             <div class="flex flex-wrap gap-2 text-xs text-slate-700 pt-1">
               <span
-                v-if="book?.item['So Chu de']"
+                v-if="book!['So Chu de']"
                 class="bg-slate-100 px-2.5 py-1 rounded border border-slate-200 font-mono"
               >
-                Chủ đề: {{ book.item["So Chu de"] }}
+                Chủ đề: {{ book!["So Chu de"] }}
               </span>
               <span
-                v-if="book?.item['So Tac gia']"
+                v-if="book!['So Tac gia']"
                 class="bg-slate-100 px-2.5 py-1 rounded border border-slate-200 font-mono"
               >
-                Mã TG: {{ book.item["So Tac gia"] }}
+                Mã TG: {{ book!["So Tac gia"] }}
               </span>
               <span
-                v-if="book?.item['So Tai san']"
+                v-if="book!['So Tai san']"
                 class="bg-slate-100 px-2.5 py-1 rounded border border-slate-200 font-mono font-bold text-[#40596c]"
               >
-                Số Tài sản: {{ book.item["So Tai san"] }}
+                Số Tài sản: {{ book!["So Tai san"] }}
               </span>
             </div>
 
@@ -304,6 +380,31 @@ const handleBorrow = () => {
                   />
                 </svg>
                 Sao chép liên kết
+              </button>
+
+              <button
+                v-if="book"
+                @click="toggleSaveBook(book)"
+                class="px-4 py-2 bg-amber-50 border border-amber-300 hover:bg-amber-100 text-amber-800 font-medium text-sm rounded shadow-sm transition active:scale-95 flex items-center gap-2"
+              >
+                <svg
+                  class="w-4 h-4 text-amber-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                  />
+                </svg>
+                {{
+                  isSaved(book["So Tai san"])
+                    ? "Đã lưu vào kệ"
+                    : "Lưu vào kệ sách"
+                }}
               </button>
             </div>
           </div>
@@ -367,15 +468,52 @@ const handleBorrow = () => {
             <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
               Tổng quan ấn phẩm
             </h3>
-            <p class="text-gray-700 text-base leading-relaxed">
-              {{ book?.item.NS[0]?.MucLuc }}
-            </p>
+            <p class="text-gray-700 text-base leading-relaxed"></p>
           </div>
         </div>
 
         <!-- Tab 1: Index -->
         <div v-if="activeTab === 'index'" class="p-6 md:p-8">
-          <div class="flex items-center space-x-2 text-sm text-slate-600">
+          <div v-if="book!.NS[0]?.MucLuc" class="prose max-w-none space-y-4">
+            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
+              Tổng quan ấn phẩm
+            </h3>
+            <div class="relative">
+              <p
+                class="text-gray-700 text-base leading-relaxed transition-all duration-300"
+                :class="{ 'max-h-96 overflow-hidden': !isIndexExpanded }"
+                style="white-space: pre-wrap"
+              >
+                {{ book!.NS[0]?.MucLuc }}
+              </p>
+              <div
+                v-if="!isIndexExpanded && book!.NS[0]?.MucLuc.length > 300"
+                class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"
+              ></div>
+            </div>
+            <div v-if="book!.NS[0]?.MucLuc.length > 300" class="text-center pt-2">
+              <button
+                @click="isIndexExpanded = !isIndexExpanded"
+                class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition inline-flex items-center gap-1.5"
+              >
+                <span>{{ isIndexExpanded ? 'Thu gọn mục lục' : 'Xem thêm toàn bộ mục lục' }}</span>
+                <svg
+                  class="w-4 h-4 transition-transform"
+                  :class="{ 'rotate-180': isIndexExpanded }"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="flex items-center space-x-2 text-sm text-slate-600"
+          >
             <svg
               class="w-5 h-5 text-amber-500"
               fill="none"
@@ -413,7 +551,7 @@ const handleBorrow = () => {
                 >
                   <dt class="font-medium text-slate-500">Tựa đề:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["Tua"] }}
+                    {{ book!["Tua"] }}
                   </dd>
                 </div>
                 <div
@@ -421,44 +559,44 @@ const handleBorrow = () => {
                 >
                   <dt class="font-medium text-slate-500">Tác giả:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["Ho Tac gia"] }}
-                    {{ book?.item["Ten Tac gia"] }}
+                    {{ book!["Ho Tac gia"] }}
+                    {{ book!["Ten Tac gia"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['Nha Xb']"
+                  v-if="book!['Nha Xb']"
                 >
                   <dt class="font-medium text-slate-500">Nhà xuất bản:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["Nha Xb"] }}
+                    {{ book!["Nha Xb"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['Noi Xb']"
+                  v-if="book!['Noi Xb']"
                 >
                   <dt class="font-medium text-slate-500">Nơi xuất bản:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["Noi Xb"] }}
+                    {{ book!["Noi Xb"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['Nam Xb']"
+                  v-if="book!['Nam Xb']"
                 >
                   <dt class="font-medium text-slate-500">Năm xuất bản:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["Nam Xb"] }}
+                    {{ book!["Nam Xb"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['So trang']"
+                  v-if="book!['So trang']"
                 >
                   <dt class="font-medium text-slate-500">Số trang:</dt>
                   <dd class="font-semibold text-slate-900 text-right">
-                    {{ book?.item["So trang"] }}
+                    {{ book!["So trang"] }}
                   </dd>
                 </div>
               </dl>
@@ -475,29 +613,29 @@ const handleBorrow = () => {
               >
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['So Tai san']"
+                  v-if="book!['So Tai san']"
                 >
                   <dt class="font-medium text-slate-500">ID Tài sản:</dt>
                   <dd class="font-mono font-semibold text-primary text-right">
-                    {{ book?.item["So Tai san"] }}
+                    {{ book!["So Tai san"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['So Chu de']"
+                  v-if="book!['So Chu de']"
                 >
                   <dt class="font-medium text-slate-500">Mã chủ đề:</dt>
                   <dd class="font-mono font-semibold text-slate-900 text-right">
-                    {{ book?.item["So Chu de"] }}
+                    {{ book!["So Chu de"] }}
                   </dd>
                 </div>
                 <div
                   class="flex justify-between py-1 border-b border-slate-100"
-                  v-if="book?.item['So Tac gia']"
+                  v-if="book!['So Tac gia']"
                 >
                   <dt class="font-medium text-slate-500">Mã tác giả:</dt>
                   <dd class="font-mono font-semibold text-slate-900 text-right">
-                    {{ book?.item["So Tac gia"] }}
+                    {{ book!["So Tac gia"] }}
                   </dd>
                 </div>
               </dl>

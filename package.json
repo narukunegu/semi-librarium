@@ -1,5 +1,6 @@
 {
   "name": "semi-librarium",
+  "version": "26.9.12",
   "type": "module",
   "private": true,
   "scripts": {

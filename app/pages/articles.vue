@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
 
+useHead({
+  title: "Bài Viết & Hướng Dẫn | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
+});
+
 const articles = [
   {
     id: 1,
