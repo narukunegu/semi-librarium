@@ -53,13 +53,14 @@
             <form
               class="relative w-full glass-surface rounded-md p-1.5 shadow-2xl border border-white/25 transition-all duration-300 focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent text-left"
               method="GET"
-              :action="'/search?q=' + query"
+              action="/search"
+              @submit="onSearchSubmit"
             >
               <div class="relative flex items-center w-full">
                 <input
                   class="w-full rounded-sm border-none bg-background/90 px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50 pr-14 h-12 font-sans transition-colors"
                   placeholder="Tra cứu tài liệu, tác giả, tác phẩm..."
-                  name="query"
+                  name="q"
                   v-model="query"
                 />
                 <div class="absolute right-1 flex items-center pr-1">
@@ -94,25 +95,7 @@
             </form>
 
             <!-- Quick Suggestion Tags / Pills -->
-            <div
-              class="flex flex-wrap items-center justify-center gap-2 text-xs pt-1"
-            >
-              <span class="text-white/70 font-medium mr-1">Tìm nhanh:</span>
-              <NuxtLink
-                v-for="tag in [
-                  'Kinh Thánh',
-                  'Thần học',
-                  'Triết học',
-                  'Giáo luật',
-                  'Lịch sử',
-                ]"
-                :key="tag"
-                :to="'/search?q=' + tag"
-                class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/25 text-white backdrop-blur-sm border border-white/20 transition-all font-medium"
-              >
-                {{ tag }}
-              </NuxtLink>
-            </div>
+            <QuickSearchTags />
           </div>
         </div>
 
@@ -502,12 +485,22 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
+import QuickSearchTags from "~/components/QuickSearchTags.vue";
+import { useSearchHistory } from "~/composables/useSearchHistory";
 
 useHead({
   title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
 });
 
 const query = ref("");
+const { addSearch } = useSearchHistory();
+
+const onSearchSubmit = () => {
+  if (query.value.trim()) {
+    addSearch(query.value);
+  }
+};
+
 const now = ref(new Date());
 let timer: ReturnType<typeof setInterval> | null = null;
 

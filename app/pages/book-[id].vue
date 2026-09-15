@@ -1,37 +1,12 @@
 <script setup lang="ts">
-//const bookData = await import("~/assets/data/book.json");
-
 import { ref, computed } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
+import BookCoverImage from "~/components/BookCoverImage.vue";
 import { useResearchShelf } from "~/composables/useResearchShelf";
+import { useCitations } from "~/composables/useCitations";
+import type { BookItem } from "~/types/book";
 
 const { toggleSaveBook, isSaved } = useResearchShelf();
-
-interface BookItem {
-  "Tu dien": string;
-  Collection: string;
-  "Tap chi": string;
-  "Chu de Tong quat": string;
-  "So Chu de": string;
-  "So Tac gia": string;
-  "So Tap": string;
-  "So Cuon": string;
-  "So Tai san": string;
-  Tua: string;
-  "Ten Tac gia": string;
-  "Ho Tac gia": string;
-  "Dich gia": string;
-  "Lan Xb": string;
-  "Noi Xb": string;
-  "Nha Xb": string;
-  "Nam Xb": string;
-  "So trang": string;
-  "Ngay nhap": string;
-  "Ngon ngu": string;
-  "Sach co": string;
-  "Tinh trang": string;
-  NS: Array<Object>;
-}
 
 interface rawData {
   book: BookItem;
@@ -39,10 +14,6 @@ interface rawData {
 
 const route = useRoute();
 const copied = ref(false);
-
-useHead({
-  title: `Chi tiết ấn phẩm | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn`,
-});
 
 const {
   data: book,
@@ -60,70 +31,22 @@ const {
   },
 );
 
+useHead({
+  title: computed(() => {
+    return (
+      (book.value?.Tua
+        ? book.value.Tua.slice(0, 50) + `...`
+        : `Chi tiết ấn phẩm`) + ` | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn`
+    );
+  }),
+});
+
 const activeTab = ref("summary");
 const isIndexExpanded = ref(false);
 
-const citationAPA = computed(() => {
-  if (!book.value) return "";
-  const item = book.value;
-  const author =
-    `${item["Ho Tac gia"] || ""} ${item["Ten Tac gia"] || ""}`.trim() ||
-    "Tác giả ẩn danh";
-  const year = item["Nam Xb"] ? `(${item["Nam Xb"]})` : "(n.d.)";
-  const title = item["Tua"] || "Không rõ tên sách";
-  const publisher = item["Nha Xb"] ? `${item["Nha Xb"]}` : "";
-  const place = item["Noi Xb"] ? `${item["Noi Xb"]}: ` : "";
-  return `${author} ${year}. <em>${title}</em>. ${place}${publisher}.`;
-});
-
-const citationMLA = computed(() => {
-  if (!book.value) return "";
-  const item = book.value;
-  const author =
-    `${item["Ho Tac gia"] || ""}, ${item["Ten Tac gia"] || ""}`.trim();
-  const title = item["Tua"] || "Không rõ tên sách";
-  const publisher = item["Nha Xb"] || "";
-  const year = item["Nam Xb"] || "";
-  return `${author}. <em>${title}</em>. ${publisher}, ${year}.`;
-});
-
-const citationChicago = computed(() => {
-  if (!book.value) return "";
-  const item = book.value;
-  const author =
-    `${item["Ten Tac gia"] || ""} ${item["Ho Tac gia"] || ""}`.trim() ||
-    "Tác giả ẩn danh";
-  const title = item["Tua"] || "Không rõ tên sách";
-  const place = item["Noi Xb"] ? `${item["Noi Xb"]}: ` : "";
-  const publisher = item["Nha Xb"] || "";
-  const year = item["Nam Xb"] || "";
-  const pubInfo =
-    place || publisher || year
-      ? `(${place}${publisher}${publisher && year ? ", " : ""}${year})`
-      : "";
-  return `${author}, <em>${title}</em> ${pubInfo}.`;
-});
-
-const citationTurabian = computed(() => {
-  if (!book.value) return "";
-  const item = book.value;
-  const author =
-    `${item["Ten Tac gia"] || ""} ${item["Ho Tac gia"] || ""}`.trim() ||
-    "Tác giả ẩn danh";
-  const title = item["Tua"] || "Không rõ tên sách";
-  const place = item["Noi Xb"] ? `${item["Noi Xb"]}: ` : "";
-  const publisher = item["Nha Xb"] || "";
-  const year = item["Nam Xb"] || "";
-  const pubInfo =
-    place || publisher || year
-      ? `(${place}${publisher}${publisher && year ? ", " : ""}${year})`
-      : "";
-  const pages = item["So trang"] ? `, ${item["So trang"]}` : "";
-  return `1. ${author}, <em>${title}</em> ${pubInfo}${pages}.`;
-});
+const { citationAPA, citationMLA, citationChicago, citationTurabian } = useCitations(book);
 
 const copyCitation = async (text: string) => {
-  // Strip HTML for plain copy
   const temp = document.createElement("div");
   temp.innerHTML = text;
   await navigator.clipboard.writeText(temp.textContent || temp.innerText || "");
@@ -189,69 +112,15 @@ const handleBorrow = () => {
         class="bg-white p-6 md:p-8 shadow-sm border border-[#e4e4e4] rounded-lg mb-6 relative overflow-hidden"
       >
         <div class="flex flex-col md:flex-row gap-8 items-start">
-          <!-- Book Cover Placeholder / Image with Badge & Shadow -->
+          <!-- Book Cover Component -->
           <div class="flex flex-col items-center gap-3">
-            <div
-              class="w-36 h-48 bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300 rounded-md shadow-md flex flex-col items-center justify-center p-3 text-center relative overflow-hidden group"
-            >
-              <img
+            <div class="w-36 h-48 shadow-md rounded-md overflow-hidden">
+              <BookCoverImage
                 v-if="book"
-                :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${book['So Tai san']}.jpg`"
-                class="object-cover w-full h-full absolute inset-0 z-10"
-                @error="
-                  (e: Event) => {
-                    const target = e.target as HTMLElement;
-                    target.style.display = 'none';
-                    const pseudo = target.nextElementSibling as HTMLElement;
-                    if (pseudo) pseudo.style.display = 'flex';
-                  }
-                "
+                :assetId="book['So Tai san']"
+                :title="book.Tua"
+                class="w-full h-full"
               />
-              <div
-                class="absolute inset-0 flex flex-col items-center justify-center p-4 z-5 bg-gradient-to-br from-amber-50 via-slate-100 to-slate-200 text-center"
-                style="display: none"
-              >
-                <div
-                  class="absolute left-0 top-0 bottom-0 w-2 bg-academic-burgundy"
-                ></div>
-                <span
-                  class="text-[10px] font-bold text-academic-burgundy uppercase tracking-widest mb-1"
-                  >Ấn Bản Quý</span
-                >
-                <p
-                  class="text-xs font-serif font-bold text-[#35536c] line-clamp-4 leading-snug"
-                >
-                  {{ book!["Tua"] }}
-                </p>
-                <span class="text-[9px] text-slate-500 mt-2 font-mono"
-                  >ID: {{ book!["So Tai san"] }}</span
-                >
-              </div>
-              <div
-                class="absolute left-0 top-0 bottom-0 w-2 bg-[#40596c]/30 z-20"
-              ></div>
-              <div
-                class="absolute inset-0 flex flex-col items-center justify-center p-3 z-0 bg-slate-100"
-              >
-                <svg
-                  class="w-10 h-10 text-slate-400 mb-2 group-hover:scale-110 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-                <span
-                  class="text-[11px] text-slate-600 font-semibold line-clamp-3 leading-tight uppercase"
-                >
-                  {{ book!["Tua"] }}
-                </span>
-              </div>
             </div>
 
             <!-- Tình trạng mượn -->
@@ -474,7 +343,7 @@ const handleBorrow = () => {
 
         <!-- Tab 1: Index -->
         <div v-if="activeTab === 'index'" class="p-6 md:p-8">
-          <div v-if="book!.NS[0]?.MucLuc" class="prose max-w-none space-y-4">
+          <div v-if="book?.NS?.[0]?.MucLuc" class="prose max-w-none space-y-4">
             <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
               Tổng quan ấn phẩm
             </h3>
@@ -484,19 +353,26 @@ const handleBorrow = () => {
                 :class="{ 'max-h-96 overflow-hidden': !isIndexExpanded }"
                 style="white-space: pre-wrap"
               >
-                {{ book!.NS[0]?.MucLuc }}
+                {{ book.NS[0].MucLuc }}
               </p>
               <div
-                v-if="!isIndexExpanded && book!.NS[0]?.MucLuc.length > 300"
+                v-if="!isIndexExpanded && book.NS[0].MucLuc.length > 300"
                 class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"
               ></div>
             </div>
-            <div v-if="book!.NS[0]?.MucLuc.length > 300" class="text-center pt-2">
+            <div
+              v-if="book.NS[0].MucLuc.length > 300"
+              class="text-center pt-2"
+            >
               <button
                 @click="isIndexExpanded = !isIndexExpanded"
                 class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition inline-flex items-center gap-1.5"
               >
-                <span>{{ isIndexExpanded ? 'Thu gọn mục lục' : 'Xem thêm toàn bộ mục lục' }}</span>
+                <span>{{
+                  isIndexExpanded
+                    ? "Thu gọn mục lục"
+                    : "Xem thêm toàn bộ mục lục"
+                }}</span>
                 <svg
                   class="w-4 h-4 transition-transform"
                   :class="{ 'rotate-180': isIndexExpanded }"
@@ -504,7 +380,12 @@ const handleBorrow = () => {
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
             </div>

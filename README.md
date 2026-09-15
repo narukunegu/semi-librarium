@@ -37,3 +37,10 @@ Locally preview the production build:
 ```bash
 npm run preview
 ```
+
+## TODO list
+
+- [] Dynamic quick search suggestion
+- [] Search autocomplete suggestion
+- [x] Make code cleaner and easier to read by divide big page to component
+- [x] Make better title of book detail page

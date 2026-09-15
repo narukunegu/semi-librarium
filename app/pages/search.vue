@@ -1,26 +1,8 @@
 <script setup lang="ts">
+import type { ResultEntry } from "~/types/book";
+import { useSearchHistory } from "~/composables/useSearchHistory";
+
 const booksData = await import("~/assets/data/books.json");
-
-interface BookItem {
-  "Chu de Tong quat": string;
-  "So Chu de": string;
-  "So Tac gia": string;
-  "So Tai san": string;
-  Tua: string;
-  "Ten Tac gia": string;
-  "Ho Tac gia": string;
-  "Noi Xb": string;
-  "Nha Xb": string;
-  "Nam Xb": string;
-  "So trang": string;
-  "Ngon ngu": string;
-  "Tinh trang": string;
-}
-
-interface ResultEntry {
-  item: BookItem;
-  refIndex: number;
-}
 
 interface RawData {
   books: ResultEntry[];
@@ -28,6 +10,19 @@ interface RawData {
 
 const route = useRoute();
 const searchQuery = ref((route.query.q as string) || "");
+const { addSearch } = useSearchHistory();
+
+// Save to history when route query changes and has value
+watch(
+  () => route.query.q,
+  (newQ) => {
+    if (typeof newQ === "string" && newQ.trim()) {
+      addSearch(newQ);
+      searchQuery.value = newQ;
+    }
+  },
+  { immediate: true },
+);
 
 useHead({
   title: computed(() =>
@@ -40,7 +35,6 @@ const selectedLanguage = ref("all");
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 
-// Giả lập API Server Fetch Data (Chỉ fetch khi có query hợp lệ)
 const {
   data: rawResults,
   pending,
@@ -54,10 +48,6 @@ const {
       return [];
     }
     searchQuery.value = q;
-    //const response: RawData = await $fetch(
-    //  "https://semi-library.free.beeceptor.com/books?q=" + q,
-    //);
-    //return response.books as ResultEntry[];
     return booksData.books as ResultEntry[];
   },
 );
@@ -80,8 +70,10 @@ const availableLanguages = computed(() => {
       const c = code.trim().toLowerCase();
       let label = `Ngôn ngữ (${code})`;
       if (c === "p" || c === "fr" || c === "french") label = "Tiếng Pháp (P)";
-      else if (c === "v" || c === "vi" || c === "vietnamese") label = "Tiếng Việt (V)";
-      else if (c === "a" || c === "en" || c === "english") label = "Tiếng Anh (A)";
+      else if (c === "v" || c === "vi" || c === "vietnamese")
+        label = "Tiếng Việt (V)";
+      else if (c === "a" || c === "en" || c === "english")
+        label = "Tiếng Anh (A)";
       return { code, label, count };
     })
     .sort((a, b) => b.count - a.count);
@@ -102,7 +94,7 @@ const availableYearRanges = computed(() => {
   if (!rawResults.value) return [];
   const years: number[] = [];
   rawResults.value.forEach((r) => {
-    const y = parseInt(r.item["Nam Xb"]);
+    const y = parseInt(r.item["Nam Xb"] || "0");
     if (!isNaN(y) && y > 0) {
       years.push(y);
     }
@@ -133,7 +125,6 @@ const availableYearRanges = computed(() => {
   return ranges;
 });
 
-// Trả về danh sách đã lọc theo từ khóa, ngôn ngữ, chủ đề, năm xuất bản & sắp xếp
 const filteredResults = computed(() => {
   if (!rawResults.value) return [];
 
@@ -147,7 +138,7 @@ const filteredResults = computed(() => {
 
     let matchesYear = true;
     if (selectedYearRange.value !== "all") {
-      const year = parseInt(item["Nam Xb"]) || 0;
+      const year = parseInt(item["Nam Xb"] || "0") || 0;
       if (selectedYearRange.value === "before2000") matchesYear = year < 2000;
       else if (selectedYearRange.value === "2000to2010")
         matchesYear = year >= 2000 && year <= 2010;
@@ -158,16 +149,17 @@ const filteredResults = computed(() => {
     return matchesLang && matchesSubject && matchesYear;
   });
 
-  // Sorting
   if (sortBy.value === "yearNewest") {
     results.sort(
       (a, b) =>
-        (parseInt(b.item["Nam Xb"]) || 0) - (parseInt(a.item["Nam Xb"]) || 0),
+        (parseInt(b.item["Nam Xb"] || "0") || 0) -
+        (parseInt(a.item["Nam Xb"] || "0") || 0),
     );
   } else if (sortBy.value === "yearOldest") {
     results.sort(
       (a, b) =>
-        (parseInt(a.item["Nam Xb"]) || 0) - (parseInt(b.item["Nam Xb"]) || 0),
+        (parseInt(a.item["Nam Xb"] || "0") || 0) -
+        (parseInt(b.item["Nam Xb"] || "0") || 0),
     );
   } else if (sortBy.value === "titleAZ") {
     results.sort((a, b) => (a.item.Tua || "").localeCompare(b.item.Tua || ""));
@@ -176,7 +168,6 @@ const filteredResults = computed(() => {
   return results;
 });
 
-// Tính toán phân trang
 const totalPages = computed(
   () => Math.ceil(filteredResults.value.length / itemsPerPage.value) || 1,
 );
@@ -186,7 +177,6 @@ const paginatedResults = computed(() => {
   return filteredResults.value.slice(start, start + itemsPerPage.value);
 });
 
-// Reset về trang 1 khi đổi từ khóa hoặc bộ lọc
 watch(
   [
     searchQuery,
@@ -201,23 +191,21 @@ watch(
   },
 );
 
-// Helper function to format book language
 const formatLanguage = (langCode: string) => {
   if (!langCode) return "";
   const code = langCode.trim().toLowerCase();
   if (code === "p" || code === "fr" || code === "french") return "Tiếng Pháp";
-  if (code === "v" || code === "vi" || code === "vietnamese") return "Tiếng Việt";
+  if (code === "v" || code === "vi" || code === "vietnamese")
+    return "Tiếng Việt";
   if (code === "a" || code === "en" || code === "english") return "Tiếng Anh";
   return langCode;
 };
 
-// Thống kê số lượng sách có thể mượn (Tinh trang === "0")
 const availableCount = computed(() => {
   return filteredResults.value.filter((r) => r.item["Tinh trang"] === "0")
     .length;
 });
 
-// Phân trang thông minh với dấu ...
 const displayedPages = computed(() => {
   const total = totalPages.value;
   const current = currentPage.value;
@@ -298,28 +286,36 @@ const displayedPages = computed(() => {
 
     <!-- Search Bar Banner -->
     <section class="bg-[#40596c] py-8 px-4 shadow-inner">
-      <div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-3">
-        <div class="relative flex-grow">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Tìm sách, tác giả, chủ đề..."
-            class="w-full h-12 px-4 pr-10 text-lg rounded border-none shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          />
-          <button
-            v-if="searchQuery"
-            @click="searchQuery = ''"
-            class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-base font-bold"
+      <div class="max-w-4xl mx-auto flex flex-col gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-grow">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Tìm sách, tác giả, chủ đề..."
+              class="w-full h-12 px-4 pr-10 text-lg rounded border-none shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              @keyup.enter="
+                navigateTo('/search?q=' + encodeURIComponent(searchQuery))
+              "
+            />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-base font-bold"
+            >
+              ✕
+            </button>
+          </div>
+          <NuxtLink
+            class="h-12 px-8 bg-[#3ea03e] hover:bg-emerald-600 text-white font-semibold text-base rounded shadow transition-colors flex items-center justify-center uppercase tracking-wider"
+            :to="'/search?q=' + encodeURIComponent(searchQuery)"
           >
-            ✕
-          </button>
+            Tìm kiếm
+          </NuxtLink>
         </div>
-        <NuxtLink
-          class="h-12 px-8 bg-[#3ea03e] hover:bg-emerald-600 text-white font-semibold text-base rounded shadow transition-colors flex items-center justify-center uppercase tracking-wider"
-          :to="'/search?q=' + searchQuery"
-        >
-          Tìm kiếm
-        </NuxtLink>
+
+        <!-- Quick / History Suggestion Tags -->
+        <QuickSearchTags />
       </div>
     </section>
 
@@ -542,62 +538,13 @@ const displayedPages = computed(() => {
 
             <!-- Cover Placeholder & Main Details -->
             <div class="flex gap-4 flex-grow">
-              <!-- Book Cover Placeholder / Image with fallback -->
-              <div
-                class="w-24 h-32 flex-shrink-0 bg-slate-100 border border-slate-200/80 rounded-lg flex flex-col items-center justify-center p-1 text-center select-none shadow-sm group-hover:shadow group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden"
-              >
-                <img
-                  :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${res.item['So Tai san']}.jpg`"
-                  class="object-cover w-full h-full absolute inset-0 z-10"
-                  @error="
-                    (e: Event) => {
-                      const target = e.target as HTMLElement;
-                      target.style.display = 'none';
-                      const pseudo = target.nextElementSibling as HTMLElement;
-                      if (pseudo) pseudo.style.display = 'flex';
-                    }
-                  "
+              <!-- Book Cover Component with fallback -->
+              <div class="w-24 h-32 flex-shrink-0">
+                <BookCoverImage
+                  :assetId="res.item['So Tai san']"
+                  :title="res.item.Tua"
+                  class="w-full h-full"
                 />
-                <div
-                  class="absolute inset-0 flex flex-col items-center justify-center p-2 z-0 bg-gradient-to-br from-slate-50 to-slate-200 text-slate-700"
-                  style="display: none"
-                >
-                  <span
-                    class="text-[9px] font-bold text-academic-burgundy uppercase tracking-wider mb-0.5"
-                    >Thư Viện</span
-                  >
-                  <p
-                    class="text-[10px] font-serif font-bold line-clamp-3 leading-tight text-[#35536c]"
-                  >
-                    {{ res.item.Tua }}
-                  </p>
-                </div>
-                <div
-                  class="absolute inset-0 flex flex-col items-center justify-center p-2 z-0 bg-slate-100"
-                >
-                  <div
-                    class="p-2 rounded-full bg-slate-200/60 text-slate-500 mb-1 group-hover:bg-emerald-500/10 group-hover:text-emerald-600 transition-colors"
-                  >
-                    <svg
-                      class="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                      />
-                    </svg>
-                  </div>
-                  <span
-                    class="text-[10px] text-slate-500 font-semibold line-clamp-2 leading-tight uppercase group-hover:text-emerald-700 transition-colors"
-                  >
-                    {{ res.item.Tua }}
-                  </span>
-                </div>
               </div>
 
               <!-- Info Container -->
@@ -610,6 +557,7 @@ const displayedPages = computed(() => {
                     <NuxtLink
                       class="text-lg font-bold text-[#35536c] hover:underline cursor-pointer leading-snug"
                       :to="'/book-' + res.item['So Tai san']"
+                      target="_blank"
                     >
                       {{ res.item.Tua }}
                     </NuxtLink>
@@ -648,7 +596,7 @@ const displayedPages = computed(() => {
                     >
                     <span v-if="res.item['Ngon ngu']">
                       <strong>Ngôn ngữ:</strong>
-                      {{ formatLanguage(res.item['Ngon ngu']) }}
+                      {{ formatLanguage(res.item["Ngon ngu"]) }}
                     </span>
                   </div>
                 </div>
@@ -659,9 +607,14 @@ const displayedPages = computed(() => {
             <div
               class="md:w-52 flex-shrink-0 border-t md:border-t-0 md:border-l border-[#e4e4e4] pt-3 md:pt-0 md:pl-5 flex flex-col justify-between text-sm"
             >
-              <div class="space-y-1.5">
+              <div class="space-y-1">
+                <span
+                  class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1"
+                >
+                  Mã phân loại
+                </span>
                 <div
-                  class="font-mono bg-[#d9e4ea] px-2.5 py-1 rounded text-[#40596c] inline-block font-bold text-sm"
+                  class="font-mono bg-slate-100/80 border border-slate-200/80 px-3 py-2 rounded-md text-[#40596c] inline-block font-bold text-xs space-y-0.5 shadow-2xs"
                 >
                   <p>{{ res.item["So Chu de"] }}</p>
                   <p>{{ res.item["So Tac gia"] }}</p>
@@ -673,14 +626,14 @@ const displayedPages = computed(() => {
               <div class="mt-4 md:mt-0">
                 <div
                   v-if="res.item['Tinh trang'] === '0'"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-[#3ea03e] font-semibold text-xs border border-emerald-200"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-[#3ea03e] font-semibold text-xs border border-emerald-200 shadow-2xs"
                 >
                   <span class="w-2 h-2 rounded-full bg-[#3ea03e]"></span>
                   Có sẵn
                 </div>
                 <div
                   v-else
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-600 font-semibold text-xs border border-rose-200"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-600 font-semibold text-xs border border-rose-200 shadow-2xs"
                 >
                   <span class="w-2 h-2 rounded-full bg-rose-500"></span>
                   Đang mượn
