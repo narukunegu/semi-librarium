@@ -64,7 +64,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
               class="w-16 h-20 bg-slate-100 rounded border flex-shrink-0 overflow-hidden relative"
             >
               <img
-                :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${book['So Tai san']}.jpg`"
+                :src="`http://data.dcvgiusesaigon.vn/api/books/cover/${book['So Tai san']}.jpg`"
                 :alt="book.Tua"
                 class="object-cover w-full h-full absolute inset-0"
                 @error="

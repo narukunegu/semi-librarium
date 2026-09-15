@@ -2,7 +2,7 @@
 import type { ResultEntry } from "~/types/book";
 import { useSearchHistory } from "~/composables/useSearchHistory";
 
-const booksData = await import("~/assets/data/books.json");
+// const booksData = await import("~/assets/data/books.json");
 
 interface RawData {
   books: ResultEntry[];
@@ -48,7 +48,11 @@ const {
       return [];
     }
     searchQuery.value = q;
-    return booksData.books as ResultEntry[];
+    const response: RawData = await $fetch(
+      "http://data.dcvgiusesaigon.vn/api/books?q=" + q,
+    );
+
+    return response.books as ResultEntry[];
   },
 );
 

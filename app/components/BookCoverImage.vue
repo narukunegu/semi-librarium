@@ -17,7 +17,7 @@ const handleImageError = (e: Event) => {
     class="bg-slate-100 border border-slate-200/80 rounded-lg flex flex-col items-center justify-center p-1 text-center select-none shadow-sm relative overflow-hidden group"
   >
     <img
-      :src="`http://thuvien.dcvgiusesaigon.vn/api/books/cover/${assetId}.jpg`"
+      :src="`http://data.dcvgiusesaigon.vn/api/books/cover/${assetId}.jpg`"
       class="object-cover w-full h-full absolute inset-0 z-10"
       @error="handleImageError"
     />

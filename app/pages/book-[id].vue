@@ -24,7 +24,7 @@ const {
   () => "book-detail-" + route.params.id,
   async () => {
     const response: rawData = await $fetch(
-      "https://semi-library.free.beeceptor.com/book/" + route.params.id,
+      "http://data.dcvgiusesaigon.vn/api/book/" + route.params.id,
     );
 
     return response.book as BookItem;
@@ -44,7 +44,8 @@ useHead({
 const activeTab = ref("summary");
 const isIndexExpanded = ref(false);
 
-const { citationAPA, citationMLA, citationChicago, citationTurabian } = useCitations(book);
+const { citationAPA, citationMLA, citationChicago, citationTurabian } =
+  useCitations(book);
 
 const copyCitation = async (text: string) => {
   const temp = document.createElement("div");
@@ -337,7 +338,9 @@ const handleBorrow = () => {
             <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
               Tổng quan ấn phẩm
             </h3>
-            <p class="text-gray-700 text-base leading-relaxed"></p>
+            <p class="text-gray-700 text-base leading-relaxed">
+              {{ book!.NS[0]!.GioiThieu }}
+            </p>
           </div>
         </div>
 
@@ -345,7 +348,7 @@ const handleBorrow = () => {
         <div v-if="activeTab === 'index'" class="p-6 md:p-8">
           <div v-if="book?.NS?.[0]?.MucLuc" class="prose max-w-none space-y-4">
             <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
-              Tổng quan ấn phẩm
+              Mục lục ấn phẩm
             </h3>
             <div class="relative">
               <p
@@ -360,10 +363,7 @@ const handleBorrow = () => {
                 class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none"
               ></div>
             </div>
-            <div
-              v-if="book.NS[0].MucLuc.length > 300"
-              class="text-center pt-2"
-            >
+            <div v-if="book.NS[0].MucLuc.length > 300" class="text-center pt-2">
               <button
                 @click="isIndexExpanded = !isIndexExpanded"
                 class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition inline-flex items-center gap-1.5"
