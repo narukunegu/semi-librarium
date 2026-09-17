@@ -14,8 +14,6 @@ const displayTags = computed(() => {
   }
   return combined;
 });
-
-const hasHistory = computed(() => history.value.length > 0);
 </script>
 
 <template>
@@ -23,8 +21,7 @@ const hasHistory = computed(() => history.value.length > 0);
     <span
       class="text-white/80 dark:text-gray-300 font-medium mr-1 flex items-center gap-1"
     >
-      <span v-if="hasHistory">Tìm kiếm gần đây & Gợi ý:</span>
-      <span v-else>Tìm nhanh:</span>
+      <span>Tìm nhanh:</span>
     </span>
 
     <NuxtLink

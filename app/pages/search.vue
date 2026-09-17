@@ -49,7 +49,7 @@ const {
     }
     searchQuery.value = q;
     const response: RawData = await $fetch(
-      "http://data.dcvgiusesaigon.vn/api/books?q=" + q,
+      "//data.dcvgiusesaigon.vn/api/books?q=" + q,
     );
 
     return response.books as ResultEntry[];
@@ -62,25 +62,44 @@ const sortBy = ref("relevance");
 
 const availableLanguages = computed(() => {
   if (!rawResults.value) return [];
-  const langs = new Map<string, number>();
+  let viCount = 0;
+  let enCount = 0;
+  let frCount = 0;
+  let otherCount = 0;
+
   rawResults.value.forEach((r) => {
     const lang = r.item["Ngon ngu"];
-    if (lang) {
-      langs.set(lang, (langs.get(lang) || 0) + 1);
+    if (!lang) {
+      otherCount++;
+      return;
+    }
+    const c = lang.trim().toLowerCase();
+    if (c === "v" || c === "vi" || c === "vietnamese") {
+      viCount++;
+    } else if (c === "a" || c === "en" || c === "english") {
+      enCount++;
+    } else if (c === "p" || c === "fr" || c === "french") {
+      frCount++;
+    } else {
+      otherCount++;
     }
   });
-  return Array.from(langs.entries())
-    .map(([code, count]) => {
-      const c = code.trim().toLowerCase();
-      let label = `Ngôn ngữ (${code})`;
-      if (c === "p" || c === "fr" || c === "french") label = "Tiếng Pháp (P)";
-      else if (c === "v" || c === "vi" || c === "vietnamese")
-        label = "Tiếng Việt (V)";
-      else if (c === "a" || c === "en" || c === "english")
-        label = "Tiếng Anh (A)";
-      return { code, label, count };
-    })
-    .sort((a, b) => b.count - a.count);
+
+  const list = [];
+  if (viCount > 0)
+    list.push({ code: "vietnamese", label: "Tiếng Việt", count: viCount });
+  if (enCount > 0)
+    list.push({ code: "english", label: "Tiếng Anh", count: enCount });
+  if (frCount > 0)
+    list.push({ code: "french", label: "Tiếng Pháp", count: frCount });
+  if (otherCount > 0)
+    list.push({
+      code: "other",
+      label: "Những ngôn ngữ khác",
+      count: otherCount,
+    });
+
+  return list;
 });
 
 const availableSubjects = computed(() => {
@@ -133,9 +152,29 @@ const filteredResults = computed(() => {
   if (!rawResults.value) return [];
 
   let results = rawResults.value.filter(({ item }) => {
-    const matchesLang =
-      selectedLanguage.value === "all" ||
-      item["Ngon ngu"] === selectedLanguage.value;
+    let matchesLang = true;
+    if (selectedLanguage.value !== "all") {
+      const lang = (item["Ngon ngu"] || "").trim().toLowerCase();
+      if (selectedLanguage.value === "vietnamese") {
+        matchesLang = lang === "v" || lang === "vi" || lang === "vietnamese";
+      } else if (selectedLanguage.value === "english") {
+        matchesLang = lang === "a" || lang === "en" || lang === "english";
+      } else if (selectedLanguage.value === "french") {
+        matchesLang = lang === "p" || lang === "fr" || lang === "french";
+      } else if (selectedLanguage.value === "other") {
+        matchesLang =
+          lang !== "v" &&
+          lang !== "vi" &&
+          lang !== "vietnamese" &&
+          lang !== "a" &&
+          lang !== "en" &&
+          lang !== "english" &&
+          lang !== "p" &&
+          lang !== "fr" &&
+          lang !== "french";
+      }
+    }
+
     const matchesSubject =
       selectedSubject.value === "all" ||
       item["Chu de Tong quat"] === selectedSubject.value;
@@ -690,18 +729,6 @@ const displayedPages = computed(() => {
     </main>
 
     <!-- Footer Component -->
-    <footer
-      class="bg-[#40596c] text-white text-xs py-6 mt-12 border-t border-[#53738c]"
-    >
-      <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-        <p>
-          © Archdiocese Saigon Seminary Library System. All rights reserved.
-        </p>
-        <div class="flex justify-center space-x-4 text-slate-300">
-          <NuxtLink to="/about" class="hover:underline">About</NuxtLink>
-          <NuxtLink to="/search" class="hover:underline">Search</NuxtLink>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </template>

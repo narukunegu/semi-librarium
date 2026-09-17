@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
+import SiteFooter from "~/components/SiteFooter.vue";
 
 useHead({
   title: "Giới Thiệu | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
@@ -62,14 +63,6 @@ useHead({
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#40596c] text-white text-xs py-6 mt-12 border-t border-[#53738c]">
-      <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-        <p>© Archdiocese Saigon Seminary Library System. All rights reserved.</p>
-        <div class="flex justify-center space-x-4 text-slate-300">
-          <NuxtLink to="/about" class="hover:underline">About</NuxtLink>
-          <NuxtLink to="/search" class="hover:underline">Search</NuxtLink>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </template>

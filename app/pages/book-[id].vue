@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
+import SiteFooter from "~/components/SiteFooter.vue";
 import BookCoverImage from "~/components/BookCoverImage.vue";
 import { useResearchShelf } from "~/composables/useResearchShelf";
 import { useCitations } from "~/composables/useCitations";
@@ -24,7 +25,7 @@ const {
   () => "book-detail-" + route.params.id,
   async () => {
     const response: rawData = await $fetch(
-      "http://data.dcvgiusesaigon.vn/api/book/" + route.params.id,
+      "//data.dcvgiusesaigon.vn/api/book/" + route.params.id,
     );
 
     return response.book as BookItem;
@@ -630,5 +631,7 @@ const handleBorrow = () => {
         </div>
       </div>
     </main>
+
+    <SiteFooter />
   </div>
 </template>

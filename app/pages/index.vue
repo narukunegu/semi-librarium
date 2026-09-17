@@ -19,11 +19,11 @@
             alt="Hero Background"
             fetchpriority="high"
             decoding="async"
-            class="object-cover w-full h-full scale-105 transition-transform duration-700 ease-out hover:scale-100"
-            src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-hero.89aecb0a.jpg&amp;w=3840&amp;q=75"
+            class="object-cover w-full h-full transition-transform duration-700 ease-out hover:scale-100"
+            :src="heroBgSrc"
           />
           <div
-            class="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-background/90 backdrop-blur-[2px]"
+            class="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-background/90 backdrop-blur-[1px]"
           ></div>
         </div>
 
@@ -487,10 +487,13 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
 import QuickSearchTags from "~/components/QuickSearchTags.vue";
 import { useSearchHistory } from "~/composables/useSearchHistory";
+import fallbackBg from "~/assets/images/background.png";
 
 useHead({
   title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
 });
+
+const heroBgSrc = ref(fallbackBg);
 
 const query = ref("");
 const { addSearch } = useSearchHistory();
@@ -508,6 +511,35 @@ onMounted(() => {
   timer = setInterval(() => {
     now.value = new Date();
   }, 1000);
+
+  // Try loading remote image in the background with a timeout
+  const remoteImgUrl = "//data.dcvgiusesaigon.vn/api/background/background.jpg";
+  const img = new Image();
+  let isDone = false;
+
+  const timeoutId = setTimeout(() => {
+    if (!isDone) {
+      isDone = true;
+      img.src = ""; // cancel loading
+    }
+  }, 4000); // 4 seconds timeout
+
+  img.onload = () => {
+    if (!isDone) {
+      isDone = true;
+      clearTimeout(timeoutId);
+      heroBgSrc.value = remoteImgUrl;
+    }
+  };
+
+  img.onerror = () => {
+    if (!isDone) {
+      isDone = true;
+      clearTimeout(timeoutId);
+    }
+  };
+
+  img.src = remoteImgUrl;
 });
 
 onUnmounted(() => {
