@@ -84,7 +84,7 @@
                     class="py-2 px-4 flex-1 flex items-center justify-center relative z-10"
                   >
                     <img
-                      alt="Biblicum Library"
+                      alt="Library"
                       fetchpriority="high"
                       width="450"
                       height="222"
