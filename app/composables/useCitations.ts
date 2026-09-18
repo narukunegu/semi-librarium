@@ -1,7 +1,7 @@
 import { computed, type Ref } from "vue";
 import type { BookItem } from "~/types/book";
 
-export const useCitations = (book: Ref<BookItem | null>) => {
+export const useCitations = (book: Ref<BookItem | undefined>) => {
   const citationAPA = computed(() => {
     if (!book.value) return "";
     const item = book.value;

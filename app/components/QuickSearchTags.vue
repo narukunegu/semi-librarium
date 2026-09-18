@@ -29,7 +29,8 @@ const displayTags = computed(() => {
       :key="tag"
       :to="'/search?q=' + encodeURIComponent(tag)"
       :aria-label="'Tìm kiếm từ khóa ' + tag"
-      class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/25 text-white backdrop-blur-sm border border-white/25 transition-all font-medium flex items-center gap-1.5 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+      :title="tag"
+      class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/25 text-white backdrop-blur-sm border border-white/25 transition-all font-medium flex items-center gap-1.5 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 max-w-[220px]"
     >
       <svg
         v-if="history.includes(tag)"
@@ -42,12 +43,12 @@ const displayTags = computed(() => {
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
-        class="opacity-70 text-amber-300"
+        class="opacity-70 text-amber-300 flex-shrink-0"
       >
         <circle cx="12" cy="12" r="10" />
         <polyline points="12 6 12 12 16 14" />
       </svg>
-      {{ tag }}
+      <span class="truncate">{{ tag }}</span>
     </NuxtLink>
   </div>
 </template>

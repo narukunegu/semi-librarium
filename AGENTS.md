@@ -11,3 +11,4 @@
 - **Build / Static Generation**: `npm run generate` (`nuxt generate`, outputs to `.output/public`)
 - **Prepare Types**: `npm run postinstall` (`nuxt prepare`)
 - **Preview**: `npm run preview`
+- **Production Build**: `npm run build`

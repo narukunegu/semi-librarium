@@ -50,49 +50,11 @@
               </p>
             </div>
 
-            <form
-              class="relative w-full glass-surface rounded-md p-1.5 shadow-2xl border border-white/25 transition-all duration-300 focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent text-left"
-              method="GET"
-              action="/search"
+            <LibrarySearchBar
+              variant="hero"
+              v-model="query"
               @submit="onSearchSubmit"
-            >
-              <div class="relative flex items-center w-full">
-                <input
-                  class="w-full rounded-sm border-none bg-background/90 px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50 pr-14 h-12 font-sans transition-colors"
-                  placeholder="Tra cứu tài liệu, tác giả, tác phẩm..."
-                  name="q"
-                  v-model="query"
-                />
-                <div class="absolute right-1 flex items-center pr-1">
-                  <div
-                    data-orientation="vertical"
-                    role="none"
-                    class="shrink-0 bg-border w-[1px] h-6 mr-2 hidden sm:block"
-                  ></div>
-                  <button
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-sm text-base font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground h-10 w-10 active:scale-95"
-                    type="submit"
-                    aria-label="Tìm kiếm"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-search"
-                    >
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <path d="m21 21-4.3-4.3"></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </form>
+            />
 
             <!-- Quick Suggestion Tags / Pills -->
             <QuickSearchTags />
@@ -486,6 +448,7 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import SiteHeader from "~/components/SiteHeader.vue";
 import QuickSearchTags from "~/components/QuickSearchTags.vue";
+import LibrarySearchBar from "~/components/LibrarySearchBar.vue";
 import { useSearchHistory } from "~/composables/useSearchHistory";
 import fallbackBg from "~/assets/images/background.png";
 

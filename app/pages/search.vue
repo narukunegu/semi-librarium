@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ResultEntry } from "~/types/book";
 import { useSearchHistory } from "~/composables/useSearchHistory";
+import LibrarySearchBar from "~/components/LibrarySearchBar.vue";
 
 // const booksData = await import("~/assets/data/books.json");
 
@@ -9,7 +10,7 @@ interface RawData {
 }
 
 const route = useRoute();
-const searchQuery = ref((route.query.q as string) || "");
+const searchQuery = ref("");
 const { addSearch } = useSearchHistory();
 
 // Save to history when route query changes and has value
@@ -47,11 +48,10 @@ const {
     if (!q) {
       return [];
     }
-    searchQuery.value = q;
-    const response: RawData = await $fetch(
+
+    const response = await $fetch<{ books?: ResultEntry[] }>(
       "//data.dcvgiusesaigon.vn/api/books?q=" + q,
     );
-
     return response.books as ResultEntry[];
   },
 );
@@ -74,11 +74,11 @@ const availableLanguages = computed(() => {
       return;
     }
     const c = lang.trim().toLowerCase();
-    if (c === "v" || c === "vi" || c === "vietnamese") {
+    if (c === "v" || c === "vi") {
       viCount++;
-    } else if (c === "a" || c === "en" || c === "english") {
+    } else if (c === "a" || c === "en") {
       enCount++;
-    } else if (c === "p" || c === "fr" || c === "french") {
+    } else if (c === "p" || c === "fr") {
       frCount++;
     } else {
       otherCount++;
@@ -156,22 +156,19 @@ const filteredResults = computed(() => {
     if (selectedLanguage.value !== "all") {
       const lang = (item["Ngon ngu"] || "").trim().toLowerCase();
       if (selectedLanguage.value === "vietnamese") {
-        matchesLang = lang === "v" || lang === "vi" || lang === "vietnamese";
+        matchesLang = lang === "v" || lang === "vi";
       } else if (selectedLanguage.value === "english") {
-        matchesLang = lang === "a" || lang === "en" || lang === "english";
+        matchesLang = lang === "a" || lang === "en";
       } else if (selectedLanguage.value === "french") {
-        matchesLang = lang === "p" || lang === "fr" || lang === "french";
+        matchesLang = lang === "p" || lang === "fr";
       } else if (selectedLanguage.value === "other") {
         matchesLang =
           lang !== "v" &&
           lang !== "vi" &&
-          lang !== "vietnamese" &&
           lang !== "a" &&
           lang !== "en" &&
-          lang !== "english" &&
           lang !== "p" &&
-          lang !== "fr" &&
-          lang !== "french";
+          lang !== "fr";
       }
     }
 
@@ -330,32 +327,11 @@ const displayedPages = computed(() => {
     <!-- Search Bar Banner -->
     <section class="bg-[#40596c] py-8 px-4 shadow-inner">
       <div class="max-w-4xl mx-auto flex flex-col gap-3">
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="relative flex-grow">
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="Tìm sách, tác giả, chủ đề..."
-              class="w-full h-12 px-4 pr-10 text-lg rounded border-none shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              @keyup.enter="
-                navigateTo('/search?q=' + encodeURIComponent(searchQuery))
-              "
-            />
-            <button
-              v-if="searchQuery"
-              @click="searchQuery = ''"
-              class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-base font-bold"
-            >
-              ✕
-            </button>
-          </div>
-          <NuxtLink
-            class="h-12 px-8 bg-[#3ea03e] hover:bg-emerald-600 text-white font-semibold text-base rounded shadow transition-colors flex items-center justify-center uppercase tracking-wider"
-            :to="'/search?q=' + encodeURIComponent(searchQuery)"
-          >
-            Tìm kiếm
-          </NuxtLink>
-        </div>
+        <LibrarySearchBar
+          variant="banner"
+          v-model="searchQuery"
+          @submit="(q) => addSearch(q)"
+        />
 
         <!-- Quick / History Suggestion Tags -->
         <QuickSearchTags />
@@ -598,17 +574,21 @@ const displayedPages = computed(() => {
                   </span>
                   <div>
                     <NuxtLink
-                      class="text-lg font-bold text-[#35536c] hover:underline cursor-pointer leading-snug"
+                      class="text-lg font-bold text-[#35536c] hover:underline cursor-pointer leading-snug line-clamp-2"
                       :to="'/book-' + res.item['So Tai san']"
+                      :title="res.item.Tua"
                       target="_blank"
                     >
                       {{ res.item.Tua }}
                     </NuxtLink>
                     <p class="text-base text-gray-700 mt-1">
-                      <span class="font-semibold text-gray-900">
+                      <NuxtLink
+                        :to="`/search?q=${res.item['Ho Tac gia']} ${res.item['Ten Tac gia']}`"
+                        class="font-semibold text-gray-900 hover:underline cursor-pointer"
+                      >
                         {{ res.item["Ho Tac gia"] }}
                         {{ res.item["Ten Tac gia"] }}
-                      </span>
+                      </NuxtLink>
                       <span v-if="res.item['Nam Xb']" class="text-gray-500">
                         ({{ res.item["Nam Xb"] }})
                       </span>

@@ -24,11 +24,11 @@ const {
 } = await useAsyncData<BookItem>(
   () => "book-detail-" + route.params.id,
   async () => {
-    const response: rawData = await $fetch(
+    const response = await $fetch<{ book?: BookItem }>(
       "//data.dcvgiusesaigon.vn/api/book/" + route.params.id,
     );
 
-    return response.book as BookItem;
+    return response as BookItem;
   },
 );
 
@@ -66,7 +66,7 @@ const handleBorrow = () => {
 <template>
   <div
     id="primoExploreRoot"
-    class="min-h-screen bg-[#fafafa] font-roboto text-[#444] antialiased"
+    class="min-h-screen bg-[#fafafa] font-roboto text-[#444] antialiased flex flex-col"
   >
     <!-- Error Banner -->
     <div v-if="error" class="w-full">
@@ -108,7 +108,7 @@ const handleBorrow = () => {
     <SiteHeader />
 
     <!-- Main Detail Container -->
-    <main class="mx-auto max-w-[1280px] px-4 py-6 md:px-8">
+    <main class="mx-auto max-w-[1280px] px-4 py-6 md:px-8 flex-1 w-full">
       <!-- Book Header Card -->
       <div
         class="bg-white p-6 md:p-8 shadow-sm border border-[#e4e4e4] rounded-lg mb-6 relative overflow-hidden"
@@ -339,9 +339,12 @@ const handleBorrow = () => {
             <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
               Tổng quan ấn phẩm
             </h3>
-            <p class="text-gray-700 text-base leading-relaxed">
-              {{ book!.NS[0]!.GioiThieu }}
+            <p v-if="book?.NS" class="text-gray-700 text-base leading-relaxed">
+              {{ book.NS[0]!.GioiThieu }}
             </p>
+            <i class="text-gray-700 text-base leading-relaxed">
+              Đang cập nhật...
+            </i>
           </div>
         </div>
 
@@ -370,9 +373,7 @@ const handleBorrow = () => {
                 class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition inline-flex items-center gap-1.5"
               >
                 <span>{{
-                  isIndexExpanded
-                    ? "Thu gọn mục lục"
-                    : "Xem thêm toàn bộ mục lục"
+                  isIndexExpanded ? "Thu gọn" : "Xem thêm toàn bộ"
                 }}</span>
                 <svg
                   class="w-4 h-4 transition-transform"
