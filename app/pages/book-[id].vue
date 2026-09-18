@@ -28,7 +28,7 @@ const {
       "//data.dcvgiusesaigon.vn/api/book/" + route.params.id,
     );
 
-    return response as BookItem;
+    return response.book as BookItem;
   },
 );
 
