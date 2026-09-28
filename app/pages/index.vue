@@ -11,10 +11,10 @@
     >
       <!-- Hero & Catalogue Search Section (Chỉnh sửa phủ kín 1 màn hình viewport) -->
       <section
-        class="relative z-0 min-h-screen flex flex-col justify-between pb-12"
+        class="relative z-0 min-h-screen flex flex-col justify-between pb-12" 
       >
         <!-- Background Hero Image with Subtle Blur Overlay -->
-        <div class="absolute -z-10 top-0 left-0 w-full h-full overflow-hidden">
+        <div class="absolute -z-10 top-0 bottom-10 left-0 w-full h-full overflow-hidden">
           <img
             alt="Hero Background"
             fetchpriority="high"
@@ -23,7 +23,7 @@
             :src="heroBgSrc"
           />
           <div
-            class="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-background/90 backdrop-blur-[1px]"
+            class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"
           ></div>
         </div>
 
@@ -62,129 +62,190 @@
         </div>
 
         <!-- Hours & Location Bar  -->
-        <div class="container mx-auto px-4 relative z-20">
-          <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-12 lg:col-span-10 lg:col-start-2">
-              <div
-                class="relative rounded-lg p-[1px] bg-gradient-to-r from-amber-200/40 via-white/30 to-amber-200/40 shadow-2xl"
-              >
-                <div
-                  class="glass-surface bg-background/90 backdrop-blur-xl rounded-lg p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden group"
+        <!-- ====================== DEWEY INFO + GIỜ MỞ CỬA ĐỘNG ====================== -->
+<!-- 
+  Thay thế hoàn toàn khung glassmorphism (logo + giờ + địa chỉ) 
+  bằng khung DeweyInfo của bạn, nhưng giữ lại logic mở/đóng cửa ở giữa.
+-->
+<div class="container mx-auto px-2 relative z-20">
+  <DeweyInfo
+    :formatted-current-date="formattedCurrentDate"
+    :is-open="isOpen"
+    :closing-time-label="closingTimeLabel"
+  />
+</div>
+      </section>
+    <section class="my-20 lg:my-28 container mx-auto px-4">
+        <div class="grid grid-cols-12 gap-8 items-center">
+          <div class="col-span-12 lg:col-span-6">
+            <div
+              class="glass-surface bg-card border border-border rounded-lg shadow-lg p-8 md:p-10 relative overflow-hidden"
+            >
+              <div class="prose mb-6">
+                <h2
+                  class="font-serif text-2xl font-bold text-card-foreground tracking-tight border-b border-border/40 pb-3"
                 >
-                  <!-- Soft Radial Glow background effect -->
-                  <div
-                    class="absolute -right-10 -bottom-10 w-48 h-48 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"
-                  ></div>
-                  <div
-                    class="absolute -left-10 -top-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none"
-                  ></div>
-
-                  <!-- Logo Brand -->
-                  <div
-                    class="py-2 px-4 flex-1 flex items-center justify-center relative z-10"
-                  >
-                    <img
-                      alt="Library"
-                      fetchpriority="high"
-                      width="450"
-                      height="222"
-                      decoding="async"
-                      class="w-32 md:w-36 lg:w-44 h-auto drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
-                      src="~/assets/images/logo-lib.png"
-                    />
-                  </div>
-
-                  <div
-                    data-orientation="vertical"
-                    role="none"
-                    class="bg-border/80 w-[1px] h-14 self-center shrink-0 hidden md:block"
-                  ></div>
-
-                  <!-- Open Hours Info -->
-                  <div
-                    class="py-2 px-4 flex-1 flex items-center justify-center text-center relative z-10"
-                  >
-                    <div class="flex flex-col items-center">
-                      <h3
-                        class="font-serif font-bold text-foreground text-xl mb-1.5 tracking-tight"
-                      >
-                        {{ formattedCurrentDate }}
-                      </h3>
-                      <div
-                        class="text-xs md:text-sm text-muted-foreground flex flex-wrap items-center justify-center gap-2"
-                      >
-                        <span
-                          v-if="isOpen"
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
-                        >
-                          <span
-                            class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"
-                          ></span>
-                          Mở cửa (đến {{ closingTimeLabel }})
-                        </span>
-                        <span
-                          v-else
-                          class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30"
-                        >
-                          <span
-                            class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"
-                          ></span>
-                          Đóng cửa
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    data-orientation="vertical"
-                    role="none"
-                    class="bg-border/80 w-[1px] h-14 self-center shrink-0 hidden sm:block"
-                  ></div>
-
-                  <!-- Location Info -->
-                  <div
-                    class="py-2 px-4 flex-1 flex items-center justify-center relative z-10"
-                  >
-                    <a
-                      href="https://maps.app.goo.gl/eckfPwRR8yTvVJdM7"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="group/link flex items-center gap-3.5 text-center sm:text-left hover:text-accent-foreground transition-colors duration-200"
-                    >
-                      <div
-                        class="p-3 rounded-full bg-primary/10 border border-primary/20 group-hover/link:bg-primary group-hover/link:text-primary-foreground text-primary transition-all duration-300 shadow-sm"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="lucide lucide-map-pin"
-                        >
-                          <path
-                            d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"
-                          />
-                          <circle cx="12" cy="10" r="3" />
-                        </svg>
-                      </div>
-                      <address
-                        class="not-italic text-sm leading-snug font-medium text-muted-foreground group-hover/link:text-foreground transition-colors underline-offset-4 group-hover/link:underline"
-                      >
-                        6 Tôn Đức Thắng, P. Bến Nghé, Q.1,<br />TP. Hồ Chí Minh
-                      </address>
-                    </a>
-                  </div>
-                </div>
+                  SECTION ABOUT Book Spotlights OR Bestsellers OR NEWBOOK...
+                </h2>
               </div>
+              
             </div>
           </div>
         </div>
       </section>
+      <!-- Library Use Cards Section (Đã cải tiến Nền Gradient & Texture) -->
+<!-- ====================== TÀI LIỆU & HƯỚNG DẪN ====================== -->
+<section class="relative py-20 lg:py-28 overflow-hidden">
+
+  <!-- Nền trắng (1/3 dưới) -->
+  <div class="absolute inset-0 bg-white"></div>
+
+  <!-- Nền màu #e4d4ce chiếm khoảng 2/3 phía trên + đổ bóng nhẹ -->
+  <div 
+    class="absolute top-0 left-0 right-0 h-[67%] bg-[#e4d4ce] shadow-[0_8px_25px_rgba(0,0,0,0.08)]"
+  ></div>
+
+  <!-- Pattern nhẹ -->
+  <div
+    class="absolute inset-0 opacity-10 pointer-events-none z-[1]"
+    style="
+      background-image: url('https://biblioteca.biblico.it/images/bg-pattern-single.png');
+      background-size: 180px;
+    "
+  ></div>
+
+  <!-- Nội dung -->
+  <div class="relative z-10">
+    <!-- Tiêu đề -->
+    <div class="container mx-auto px-4 mb-12">
+      <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div class="prose">
+            <span class="text-xs uppercase font-bold tracking-widest text-gray-600 mb-1 block">
+              Tài liệu & Hướng dẫn
+            </span>
+            <h2 class="font-serif text-3xl font-bold tracking-tight text-gray-800">
+              Danh Mục & Hướng Dẫn
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Card -->
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 lg:col-span-10 lg:col-start-2">
+          <ul class="grid md:grid-cols-3 gap-6">
+
+            <!-- Card 1 -->
+            <li class="group flex flex-col rounded-xl border border-border/80 bg-white/95 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+              <div class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300">
+                <img
+                  alt="Tra cứu"
+                  decoding="async"
+                  class="object-cover w-full h-full"
+                  src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-1.03297210.jpg&w=3840&q=75"
+                />
+              </div>
+              <div class="flex-1 mb-6 prose text-card-foreground">
+                <h3 class="font-serif text-2xl font-bold tracking-tight text-foreground mb-4 border-b border-border/60 pb-3">
+                  Cách Tra Cứu Sách
+                </h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">
+                  Sử dụng hệ thống tra cứu trực tuyến (OPAC) để nhanh chóng
+                  tìm kiếm theo tên tác phẩm, tác giả, chủ đề hoặc mã phân
+                  loại Dewey/SBC.
+                </p>
+              </div>
+              <div class="flex justify-end pt-6">
+                <NuxtLink
+                  to="/articles"
+                  class="group relative inline-flex items-center justify-center 
+                         text-sm font-semibold tracking-wide transition-all duration-200 
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+                         bg-white text-primary-foreground hover:bg-accent hover:text-accent-foreground 
+                         h-11 px-6 py-2 shadow-sm active:scale-95 overflow-hidden rounded-md"
+                >
+                  <span>Chi tiết</span>
+                </NuxtLink>
+              </div>
+            </li>
+
+            <!-- Card 2 -->
+            <li class="group flex flex-col rounded-xl border border-border/80 bg-white/95 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+              <div class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300">
+                <img
+                  alt="Mượn trả"
+                  decoding="async"
+                  class="object-cover w-full h-full"
+                  src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-2.d7e2e367.jpg&w=3840&q=75"
+                />
+              </div>
+              <div class="flex-1 mb-6 prose text-card-foreground">
+                <h3 class="font-serif text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors">
+                  Cách Mượn & Trả Sách
+                </h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">
+                  Độc giả xuất trình thẻ thư viện tại bàn thủ thư. Quy định
+                  gia hạn và giới hạn số lượng tài liệu được cập nhật công
+                  khai tại quầy phục vụ.
+                </p>
+              </div>
+              <div class="flex justify-end pt-5">
+                <NuxtLink
+                  to="/articles"
+                  class="group relative inline-flex items-center justify-center 
+                         text-sm font-semibold tracking-wide transition-all duration-200 
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+                         bg-white text-primary-foreground hover:bg-accent hover:text-accent-foreground 
+                         h-11 px-6 py-2 shadow-sm active:scale-95 overflow-hidden rounded-md"
+                >
+                  <span>Chi tiết</span>
+                </NuxtLink>
+              </div>
+            </li>
+
+            <!-- Card 3 -->
+            <li class="group flex flex-col rounded-xl border border-border/80 bg-white/95 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300">
+              <div class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300">
+                <img
+                  alt="Nguồn tài liệu"
+                  decoding="async"
+                  class="object-cover w-full h-full"
+                  src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-3.bfd27969.jpg&w=3840&q=75"
+                />
+              </div>
+              <div class="flex-1 mb-6 prose text-card-foreground">
+                <h3 class="font-serif text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors">
+                  Truy Cập Tài Liệu Soạn Thảo
+                </h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">
+                  Hướng dẫn đăng ký tài khoản tra cứu cơ sở dữ liệu số, tiếp
+                  cận tài liệu số hóa và các phòng đọc chuyên đề tại thư
+                  viện.
+                </p>
+              </div>
+              <div class="flex justify-end pt-2">
+                <NuxtLink
+                  to="/articles"
+                  class="group relative inline-flex items-center justify-center 
+                         text-sm font-semibold tracking-wide transition-all duration-200 
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+                         bg-white text-primary-foreground hover:bg-accent hover:text-accent-foreground 
+                         h-11 px-6 py-2 shadow-sm active:scale-95 overflow-hidden rounded-md"
+                >
+                  <span>Chi tiết</span>
+                </NuxtLink>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       <!-- About & Overview Section (Bổ sung Pattern Background) -->
       <section class="container mx-auto px-4 my-20 lg:my-28 relative">
@@ -192,7 +253,7 @@
           <div class="col-span-12 lg:col-span-10 lg:col-start-2 relative">
             <!-- Pattern trang trí chìm phía sau -->
             <div
-              class="absolute inset-0 -z-10 rounded-xl opacity-80 dark:opacity-80 pointer-events-none"
+              class="relative h-130 bg-center bg-fixed bg-cover bg-botton bg-no-repeat z-0"
               style="
                 background-image: url(&quot;https://biblioteca.biblico.it/images/bg-pattern-1.png&quot;);
                 background-size: 280px;
@@ -204,7 +265,7 @@
             >
               <div class="prose max-w-none text-foreground">
                 <h2
-                  class="font-serif text-3xl font-bold tracking-tight text-foreground mb-4 border-b border-border/60 pb-3"
+                  class="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', mono; text-yellow-700 text-3xl font-bold tracking-tight text-foreground mb-4 border-b border-border/60 pb-3"
                 >
                   Đôi Nét Về Thư Viện
                 </h2>
@@ -248,141 +309,7 @@
           </div>
         </div>
       </section>
-
-      <!-- Library Use Cards Section (Đã cải tiến Nền Gradient & Texture) -->
-      <section
-        class="py-20 lg:py-28 bg-accent/10 border-y border-border/60 relative overflow-hidden"
-      >
-        <div
-          class="absolute inset-0 opacity-15 pointer-events-none"
-          style="
-            background-image: url(&quot;https://biblioteca.biblico.it/images/bg-pattern-single.png&quot;);
-            background-size: 180px;
-          "
-        ></div>
-
-        <div class="container mx-auto px-4 mb-12 relative z-10">
-          <div class="grid grid-cols-12 gap-4">
-            <div
-              class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-            >
-              <div class="prose">
-                <span
-                  class="text-xs uppercase font-bold tracking-widest text-primary mb-1 block"
-                  >Tài liệu & Hướng dẫn</span
-                >
-                <h2
-                  class="font-serif text-3xl font-bold tracking-tight text-foreground"
-                >
-                  Danh Mục & Hướng Dẫn Thư Viện
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="container mx-auto px-4 relative z-10">
-          <div class="grid grid-cols-12 gap-6">
-            <div class="col-span-12 lg:col-span-10 lg:col-start-2">
-              <ul class="grid md:grid-cols-3 gap-6">
-                <!-- Card 1 -->
-                <li
-                  class="group flex flex-col rounded-xl border border-border/80 hover:border-emerald-500/50 bg-card/90 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
-                >
-                  <div
-                    class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300"
-                  >
-                    <img
-                      alt="Tra cứu"
-                      decoding="async"
-                      class="object-cover w-full h-full"
-                      src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-1.03297210.jpg&amp;w=3840&amp;q=75"
-                    />
-                  </div>
-                  <div class="flex-1 mb-6 prose text-card-foreground">
-                    <h3
-                      class="font-serif text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors"
-                    >
-                      Cách Tra Cứu Sách
-                    </h3>
-                    <p class="text-sm text-muted-foreground leading-relaxed">
-                      Sử dụng hệ thống tra cứu trực tuyến (OPAC) để nhanh chóng
-                      tìm kiếm theo tên tác phẩm, tác giả, chủ đề hoặc mã phân
-                      loại Dewey/SBC.
-                    </p>
-                  </div>
-                </li>
-
-                <!-- Card 2 -->
-                <li
-                  class="group flex flex-col rounded-xl border border-border/80 hover:border-emerald-500/50 bg-card/90 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
-                >
-                  <div
-                    class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300"
-                  >
-                    <img
-                      alt="Mượn trả"
-                      decoding="async"
-                      class="object-cover w-full h-full"
-                      src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-2.d7e2e367.jpg&amp;w=3840&amp;q=75"
-                    />
-                  </div>
-                  <div class="flex-1 mb-6 prose text-card-foreground">
-                    <h3
-                      class="font-serif text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors"
-                    >
-                      Cách Mượn & Trả Sách
-                    </h3>
-                    <p class="text-sm text-muted-foreground leading-relaxed">
-                      Độc giả xuất trình thẻ thư viện tại bàn thủ thư. Quy định
-                      gia hạn và giới hạn số lượng tài liệu được cập nhật công
-                      khai tại quầy phục vụ.
-                    </p>
-                  </div>
-                </li>
-
-                <!-- Card 3 -->
-                <li
-                  class="group flex flex-col rounded-xl border border-border/80 hover:border-emerald-500/50 bg-card/90 backdrop-blur-md text-card-foreground p-6 lg:p-8 relative overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
-                >
-                  <div
-                    class="absolute -z-10 inset-0 opacity-15 group-hover:opacity-25 transition-opacity duration-300"
-                  >
-                    <img
-                      alt="Nguồn tài liệu"
-                      decoding="async"
-                      class="object-cover w-full h-full"
-                      src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-3.bfd27969.jpg&amp;w=3840&amp;q=75"
-                    />
-                  </div>
-                  <div class="flex-1 mb-6 prose text-card-foreground">
-                    <h3
-                      class="font-serif text-xl font-bold text-card-foreground mb-3 group-hover:text-primary transition-colors"
-                    >
-                      Truy Cập Tài Liệu Soạn Thảo
-                    </h3>
-                    <p class="text-sm text-muted-foreground leading-relaxed">
-                      Hướng dẫn đăng ký tài khoản tra cứu cơ sở dữ liệu số, tiếp
-                      cận tài liệu số hóa và các phòng đọc chuyên đề tại thư
-                      viện.
-                    </p>
-                  </div>
-                  <div class="flex justify-end pt-2">
-                    <NuxtLink
-                      to="/articles"
-                      class="inline-flex items-center justify-center rounded-sm text-xs font-semibold tracking-wider uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground h-9 px-4 shadow-sm"
-                    >
-                      Chi tiết
-                    </NuxtLink>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Library Hours & Schedule Details Section -->
+            <!-- Library Hours & Schedule Details Section -->
       <section class="my-20 lg:my-28 container mx-auto px-4">
         <div class="grid grid-cols-12 gap-8 items-center">
           <div class="col-span-12 lg:col-span-6">
@@ -402,7 +329,7 @@
                 >
                   <span class="font-semibold">Thứ Hai – Thứ Sáu</span>
                   <span class="font-mono font-medium"
-                    >8:00 AM - 11:00 AM | 2:00 PM - 4:00 PM</span
+                    >8:00 AM - 11:00 AM | 2:00 PM - 4:30 PM</span
                   >
                 </div>
                 <div
@@ -415,7 +342,7 @@
                   <span class="font-semibold"
                     >Chúa Nhật & Ngày Lễ Công Giáo</span
                   >
-                  <span class="font-semibold text-destructive">Nghỉ</span>
+                  <span class="font-semibold text-destructive">Tạm nghỉ</span>
                 </div>
               </div>
             </div>
@@ -450,7 +377,7 @@ import SiteHeader from "~/components/SiteHeader.vue";
 import QuickSearchTags from "~/components/QuickSearchTags.vue";
 import LibrarySearchBar from "~/components/LibrarySearchBar.vue";
 import { useSearchHistory } from "~/composables/useSearchHistory";
-import fallbackBg from "~/assets/images/background.png";
+import fallbackBg from "~/assets/images/temple.png";
 
 useHead({
   title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
@@ -563,7 +490,7 @@ const closingTimeLabel = computed(() => {
     if (currentMinutes < 11 * 60) {
       return "11:00";
     }
-    return "16:00";
+    return "16:30";
   }
   if (day === 6) {
     return "11:30";
