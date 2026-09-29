@@ -4,8 +4,14 @@ const mobileMenuOpen = ref(false);
 </script>
 
 <template>
-  <header class="bg-[#53738c] text-white shadow-md w-full sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+  <!-- Header chia 2 khung màu -->
+  <header class="bg-[#e4d4ce] text-gray-800 shadow-md w-full z-50 relative overflow-hidden">
+    
+    <!-- Khung màu cam đậm bên phải -->
+    <div class="absolute top-0 right-0 w-72 md:w-88 h-full bg-[#c1856f]"></div>
+
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between relative z-10">
+      
       <!-- Logo & Title -->
       <div class="flex items-center space-x-3">
         <NuxtLink
@@ -14,50 +20,52 @@ const mobileMenuOpen = ref(false);
         >
           <img
             src="~/assets/images/logo-lib.png"
-            alt=""
+            alt="Logo thư viện"
             class="h-12 object-contain"
           />
         </NuxtLink>
       </div>
 
-      <!-- Navigation Preserved Links -->
+      <!-- Navigation-->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
         <NuxtLink
           to="/search"
-          class="hover:text-amber-200 transition-colors pb-1"
-          exactActiveClass="border-b-2 border-white"
+          class="hover:text-[#c1856f] transition-colors pb-1"
+          exactActiveClass="border-b-2 border-[#c1856f]"
         >
           Tìm Sách
         </NuxtLink>
         <NuxtLink
           to="/articles"
-          class="hover:text-amber-200 transition-colors pb-1"
-          exactActiveClass="border-b-2 border-white"
+          class="hover:text-[#c1856f] transition-colors pb-1"
+          exactActiveClass="border-b-2 border-[#c1856f]"
         >
           Bài Viết
         </NuxtLink>
         <NuxtLink
           to="/about"
-          class="hover:text-amber-200 transition-colors pb-1"
-          exactActiveClass="border-b-2 border-white"
+          class="hover:text-[#c1856f] transition-colors pb-1"
+          exactActiveClass="border-b-2 border-[#c1856f]"
         >
           Giới Thiệu
         </NuxtLink>
       </nav>
 
-      <!-- Account & Actions / Mobile Menu Button -->
-      <div class="flex items-center space-x-3 text-sm">
+      <!-- Account & Mobile Menu Button -->
+      <div class="flex items-center space-x-3 text-sm relative z-10">
         <NuxtLink
-          class="hidden sm:inline-block px-3 py-1.5 rounded bg-black/20 hover:bg-black/30 transition-colors"
+          class="hidden sm:inline-flex items-center px-4 py-2 rounded-l bg-[#b06a52] text-white font-medium
+                 shadow-md hover:bg-[#9a5a45] hover:shadow-lg 
+                 transition-all duration-200"
           to="/bookshelf"
         >
-          Kệ sách cá nhân
+          Kệ sách cá nhân
         </NuxtLink>
 
-        <!-- Mobile Hamburger Toggle -->
+        <!-- Nút Hamburger mobile -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
-          class="md:hidden p-2 rounded hover:bg-black/20 transition-colors"
+          class="md:hidden p-2 rounded hover:bg-black/10 transition-colors"
           aria-label="Toggle menu"
         >
           <svg
@@ -88,41 +96,30 @@ const mobileMenuOpen = ref(false);
     <!-- Mobile Dropdown Menu -->
     <div
       v-if="mobileMenuOpen"
-      class="md:hidden bg-[#40596c] border-t border-[#53738c] px-4 py-4 space-y-3"
+      class="md:hidden bg-[#c1856f] text-white border-t border-[#a86f5a] px-4 py-4 space-y-3 relative z-10"
     >
       <NuxtLink
         to="/search"
         @click="mobileMenuOpen = false"
-        class="block py-2 text-sm font-medium hover:text-amber-200"
+        class="block py-2 text-sm font-medium hover:text-amber-100"
       >
         Tìm Sách
       </NuxtLink>
       <NuxtLink
         to="/shelf"
         @click="mobileMenuOpen = false"
-        class="block py-2 text-sm font-medium hover:text-amber-200"
+        class="block py-2 text-sm font-medium hover:text-amber-100"
       >
         Kệ Sách Của Tôi
       </NuxtLink>
       <NuxtLink
         to="/articles"
         @click="mobileMenuOpen = false"
-        class="block py-2 text-sm font-medium hover:text-amber-200"
+        class="block py-2 text-sm font-medium hover:text-amber-100"
       >
         Bài Viết
       </NuxtLink>
-      <NuxtLink
-        to="/about"
-        @click="mobileMenuOpen = false"
-        class="block py-2 text-sm font-medium hover:text-amber-200"
-      >
-        Thông Tin
-      </NuxtLink>
-      <button
-        class="w-full text-left py-2 text-sm font-medium hover:text-amber-200"
-      >
-        Đăng Nhập
-      </button>
+
     </div>
   </header>
 </template>
