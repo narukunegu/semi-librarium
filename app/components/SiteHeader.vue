@@ -28,6 +28,13 @@ const mobileMenuOpen = ref(false);
 
       <!-- Navigation-->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <NuxtLink
+          to="/"
+          class="hover:text-[#c1856f] transition-colors pb-1"
+          exactActiveClass="border-b-2 border-[#c1856f]"
+        >
+          Trang Chủ
+        </NuxtLink>
         <NuxtLink
           to="/search"
           class="hover:text-[#c1856f] transition-colors pb-1"
