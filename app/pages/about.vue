@@ -50,13 +50,13 @@ useHead({
         <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-200">
           <div>
             <strong class="text-white block mb-1">Thời gian mở cửa:</strong>
-            <p>Thứ Hai – Thứ Sáu: 8:00 - 11:00 | 14:00 - 16:00</p>
+            <p>Thứ Hai – Thứ Sáu: 8:00 - 11:00 | 14:00 - 16:30</p>
             <p>Thứ Bảy: 8:00 - 11:30</p>
-            <p class="text-amber-300 mt-1">Chúa Nhật & Ngày Lễ: Nghỉ</p>
+            <p class="text-amber-300 mt-1">Chúa Nhật & Ngày Lễ: Tạm Nghỉ</p>
           </div>
           <div>
             <strong class="text-white block mb-1">Địa chỉ:</strong>
-            <p>6 Tôn Đức Thắng, P. Bến Nghé, Q.1, TP. Hồ Chí Minh</p>
+            <p>6 Tôn Đức Thắng, P. Sài gòn, TP. Hồ Chí Minh</p>
           </div>
         </div>
       </div>
