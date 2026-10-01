@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
+import SiteFooter from "~/components/SiteFooter.vue";
 import { useResearchShelf } from "~/composables/useResearchShelf";
-
 useHead({
   title: "Kệ Sách Cá Nhân | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
 });
@@ -24,8 +24,10 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
             Kệ sách cá nhân
           </h1>
           <p class="text-gray-600 text-sm">
-            Lưu trữ và quản lý các ấn phẩm phục vụ cho việc nghiên cứu cá nhân.
+            Lưu trữ và quản lý các ấn phẩm phục vụ cho việc nghiên cứu cá nhân. Vì thế bạn có thể click vào nút "lưu vào kệ sách" nằm bên phải.
           </p>
+            <p class="text-gray-600 text-sm">
+                Lưu ý: Những sách đã lưu chỉ xuất hiện trên máy tính cá nhân của bạn (không tự động lưu khi bạn đổi máy khác) </p>
         </div>
       </div>
 
@@ -111,8 +113,8 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
+ <SiteFooter />
+    <!-- Footer 
     <footer
       class="bg-[#40596c] text-white text-xs py-6 mt-12 border-t border-[#53738c]"
     >
@@ -125,6 +127,6 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
           <NuxtLink to="/search" class="hover:underline">Search</NuxtLink>
         </div>
       </div>
-    </footer>
+    </footer> -->
   </div>
 </template>
