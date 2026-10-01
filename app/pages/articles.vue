@@ -65,7 +65,7 @@ const articles = [
               </span>
               <span class="text-xs text-gray-400">{{ article.date }}</span>
             </div>
-            <h2 class="font-serif text-xl font-bold text-[#35536c] hover:underline cursor-pointer">
+            <h2 class="font-title-serif text-xl font-bold text-[#35536c] hover:underline cursor-pointer">
               {{ article.title }}
             </h2>
             <p class="text-sm text-gray-600 leading-relaxed">
