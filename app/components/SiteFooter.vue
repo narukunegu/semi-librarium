@@ -53,7 +53,20 @@
                 123 456 789 (Sr.Tài)
               </a>
             </li>
-
+      <!-- Website -->
+    <li class="flex items-center gap-3">
+             <!-- Biểu tượng website (globe) -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4d4ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+       </svg>
+  
+             <!-- Link website -->
+             <a href="https://www.dcvgiusesaigon.vn/" target="_blank" class="hover:text-white transition">
+              dcvgiusesaigon.vn
+            </a>
+       </li>
             <!-- Mail -->
             <li class="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4d4ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
@@ -79,6 +92,7 @@
               <span>
                 Liên hệ trực tiếp: Tại lầu 1 phòng thư viện của Đại Chủng Viện Thánh Giuse Saigon.
               </span>
+             
             </li>
           </ul>
         </div>
