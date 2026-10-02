@@ -46,7 +46,7 @@ useHead({
 
       <!-- Schedule & Contact Info -->
       <div class="bg-[#40596c] text-white p-8 rounded-xl shadow-md space-y-4">
-        <h2 class="font-serif text-2xl font-bold text-amber-200">Giờ phục vụ & Liên hệ</h2>
+        <h2 class="font-serif text-2xl font-bold text-amber-200">Lịch phục vụ & Liên hệ</h2>
         <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-200">
           <div>
             <strong class="text-white block mb-1">Thời gian mở cửa:</strong>
@@ -57,6 +57,7 @@ useHead({
           <div>
             <strong class="text-white block mb-1">Địa chỉ:</strong>
             <p>6 Tôn Đức Thắng, P. Sài gòn, TP. Hồ Chí Minh</p>
+            
           </div>
         </div>
       </div>
