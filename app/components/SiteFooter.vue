@@ -1,4 +1,3 @@
-<!-- components/SiteFooter.vue -->
 <template>
   <footer class="bg-[#c1856f] text-white">
     <div class="max-w-7xl mx-auto px-6 py-14">
@@ -15,7 +14,7 @@
           </NuxtLink>
         </div>
 
-        <!-- Cột 2: Địa chỉ + Map -->
+        <!-- Cột 2:  Map -->
         <div class="md:col-span-3">
           <h4 class="text-sm font-semibold uppercase tracking-wider text-white/90 mb-4">
             Địa chỉ
@@ -38,19 +37,19 @@
           </a>
         </div>
 
-        <!-- Cột 3: Liên hệ -->
+        <!-- Cột 3: contact-->
         <div class="md:col-span-3">
           <h4 class="text-sm font-semibold uppercase tracking-wider text-white/90 mb-4">
             Liên hệ
           </h4>
           <ul class="space-y-3 text-sm text-white/90">
-            <!-- Điện thoại -->
+            <!-- Phone -->
             <li class="flex items-center gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4d4ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               <a href="tel:123456789" class="hover:text-white transition">
-                123 456 789 (Sr.Tài)
+                0938063746
               </a>
             </li>
       <!-- Website -->
@@ -62,8 +61,7 @@
             <path d="M2 12h20"/>
        </svg>
   
-             <!-- Link website -->
-             <a href="https://www.dcvgiusesaigon.vn/" target="_blank" class="hover:text-white transition">
+            <a href="dcvgiusesaigon.vn" target="_blank" class="hover:text-white transition">
               dcvgiusesaigon.vn
             </a>
        </li>
@@ -73,12 +71,12 @@
                 <rect width="20" height="16" x="2" y="4" rx="2"/>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
               </svg>
-              <a href="mailto:123@gmail.com" class="hover:text-white transition">
-                123@gmail.com
+              <a href="thuviendcvsg@gmail.com" class="hover:text-white transition">
+                thuviendcvsg@gmail.com
               </a>
             </li>
 
-            <!-- Liên hệ trực tiếp -->
+            <!--contact office -->
             <li class="flex items-start gap-3">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e4d4ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 mt-0.5">
                 <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/>
@@ -97,7 +95,7 @@
           </ul>
         </div>
 
-        <!-- Cột 4: Tìm nhanh -->
+        <!-- Cột 4 -->
         <div class="md:col-span-3">
           <h4 class="text-sm font-semibold uppercase tracking-wider text-white/90 mb-4">
            <NuxtLink to="/" class="hover:text-white transition">Trang chủ</NuxtLink>
@@ -111,7 +109,7 @@
       </div>
     </div>
 
-    <!-- Copyright - chữ đen -->
+    <!-- Copyright -->
     <div class="bg-[#e4d4ce] font- medium border-t border-black/5">
       <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-black">
         <p>
