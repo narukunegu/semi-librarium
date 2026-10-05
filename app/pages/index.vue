@@ -7,12 +7,10 @@
     <main
       data-clonetohtml-wf-revealed="true"
       style="opacity: 1; visibility: visible"
-      class="flex-1"
-    >
+      class="flex-1">
       <!-- Hero & Catalogue Search Section (Chỉnh sửa phủ kín 1 màn hình viewport, background) -->
       <section
-        class="relative z-0 min-h-screen flex flex-col justify-between pb-12" 
-      >
+        class="relative z-0 min-h-screen flex flex-col justify-between pb-12" >
         <!-- Background Hero Image with Subtle Blur Overlay -->
         <div class="absolute -z-10 top-0 bottom-10 left-0 w-full h-full overflow-hidden">
           <img
@@ -45,7 +43,7 @@
               <p
                 class="text-base sm:text-lg text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
               >
-                Tra cứu hơn 70.000 đầu sách, tài liệu và ấn bản chuyên khảo phục
+                Tra cứu hơn 70.000 cuốn sách, tài liệu và ấn bản chuyên khảo phục
                 vụ học tập & nghiên cứu.
               </p>
             </div>
@@ -60,39 +58,23 @@
             <QuickSearchTags />
           </div>
         </div>
-
-        <!-- Hours & Location Bar  -->
-        <!-- ====================== DEWEY INFO + GIỜ MỞ CỬA ĐỘNG ====================== -->
-<!-- 
-  Thay thế hoàn toàn khung glassmorphism (logo + giờ + địa chỉ) 
-  bằng khung DeweyInfo của bạn, nhưng giữ lại logic mở/đóng cửa ở giữa.
--->
-<div class="container mx-auto px-2 relative z-20">
-  <DeweyInfo
-    :formatted-current-date="formattedCurrentDate"
-    :is-open="isOpen"
-    :closing-time-label="closingTimeLabel"
-  />
-</div>
-      </section>
-      <!-- newbook or book spotlights -->
-<section class="my-20 lg:my-28 container mx-auto px-4">
-        <div class="grid grid-cols-12 gap-8 items-center">
-          <div class="col-span-12 lg:col-span-6">
-            <div
-              class="glass-surface bg-card border border-border rounded-lg shadow-lg p-8 md:p-10 relative overflow-hidden"
-            >
-              <div >
-                <h2
-                  class="font-serif text-2xl font-bold text-card-foreground tracking-tight border-b border-border/40 pb-3"
-                >
-                  SECTION ABOUT Book Spotlights OR NEWBOOK...
-                </h2>
-              </div>
-              
+        <!-- ====================== DEWEY INFO + Hours & Location Bar  ====================== -->
+            <div class="container mx-auto px-2 relative z-20">
+              <DeweyInfo
+                :formatted-current-date="formattedCurrentDate"
+                :is-open="isOpen"
+                :closing-time-label="closingTimeLabel"
+              />
             </div>
-          </div>
-        </div>
+      </section>
+      <!-- Bookspotlights -->
+<section class="my-16 lg:my-24 container mx-auto px-4">
+  <div class="text-center mb-10">
+    <h2 class="text-xl sm:text-3xl font-bold text-yellow-900 mb-2">
+      Section about "Sách Nổi Bật Trong Tuần"
+    </h2>
+    <div class="mx-auto mt-3 w-24 h-1 bg-[#c1856f] rounded-full"></div>
+  </div>
 </section>
       <!-- Library Use Cards Section (Đã cải tiến Nền Gradient & Texture - Tài Liệu & Hướng dẫn) -->
 <section class="relative py-20 lg:py-28 overflow-hidden" >
@@ -100,7 +82,7 @@
       <div 
        class="absolute top-0 left-0 right-0 h-[67%] bg-[#e4d4ce] shadow-[0_8px_25px_rgba(0,0,0,0.08)]"
        ></div>
-  <!-- Pattern nhẹ -->
+      <!-- Pattern nhẹ -->
          <div
            class="absolute inset-0 opacity-10 pointer-events-none z-[1]"
            style="
@@ -108,7 +90,6 @@
              background-size: 180px;"
            ></div>
   <div class="relative z-10">
-          <!-- Tiêu đề -->
           <div class="container mx-auto px-4 mb-12">
             <div class="grid grid-cols-12 gap-4">
               <div class="col-span-12 lg:col-span-10 lg:col-start-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -123,31 +104,26 @@
               </div>
             </div>
           </div>
-
     <!-- 3 Card -->
-<!-- 3 Card: màu chủ đạo + ảnh mờ phía sau + hover nhẹ -->
 <div class="container mx-auto px-4">
   <div class="grid grid-cols-12 gap-6">
     <div class="col-span-12 lg:col-span-10 lg:col-start-2">
       <ul class="grid md:grid-cols-3 gap-6">
 
-        <!-- Card 1: Cách Tra Cứu Sách - trắng kem chủ đạo -->
+        <!-- Card 1-->
         <li
           class="group relative flex flex-col overflow-hidden min-h-[320px]
                  shadow-md hover:shadow-2xl hover:-translate-y-1.5
                  transition-all duration-300 ease-out rounded-lg"
         >
-          <!-- Ảnh nền mờ phía sau -->
           <img
             alt="Tra cứu"
             decoding="async"
             class="absolute inset-0 w-full h-full object-cover opacity-25"
             src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-1.03297210.jpg&w=3840&q=75"
           />
-          <!-- Nền màu chủ đạo -->
           <div class="absolute inset-0 bg-[#f5ebe0]/80"></div>
 
-          <!-- Nội dung -->
           <div class="relative z-10 flex flex-col flex-1 p-8 lg:p-10">
             <div class="flex-1">
               <p class="text-xs uppercase tracking-widest text-gray-500 mb-2">Hướng dẫn</p>
@@ -173,7 +149,7 @@
           </div>
         </li>
 
-        <!-- Card 2: Cách Mượn & Trả Sách - cam #c1856f chủ đạo -->
+        <!-- Card 2 -->
         <li
           class="group relative flex flex-col overflow-hidden min-h-[320px]
                  shadow-md hover:shadow-2xl hover:-translate-y-1.5
@@ -212,7 +188,7 @@
           </div>
         </li>
 
-        <!-- Card 3: Truy Cập Tài Liệu Soạn Thảo - tím xám đậm chủ đạo -->
+        <!-- Card 3 -->
         <li
           class="group relative flex flex-col overflow-hidden min-h-[320px]
                  shadow-md hover:shadow-2xl hover:-translate-y-1.5
@@ -257,8 +233,7 @@
 </div>
   </div>
 </section>
-      <!-- About & Overview Section (Bổ sung Pattern Background) -->
-   <!-- ====================== ĐÔI NÉT VỀ THƯ VIỆN ====================== -->
+      <!-- About & Overview Lib Section (Bổ sung Pattern Background) -->
 <section
   class="relative py-20 lg:py-28 overflow-hidden"
   :style="{
@@ -267,7 +242,6 @@
     backgroundPosition: 'center',
   }"
 >
-  <!-- Lớp phủ trắng nhẹ cho chữ dễ đọc -->
   <div class="absolute inset-0 bg-white/70"></div>
 
   <div class="container mx-auto px-4 relative z-10">
@@ -278,10 +252,11 @@
         >
           <div class="prose max-w-none text-foreground">
             <h2
-              class="font-title-serif text-center text-[#03080c] text-3xl font-bold tracking-tight text-foreground mb-4 border-b border-border/60 pb-3"
+              class="text-center text-xl sm:text-3xl font-bold text-yellow-900 mb-2"
             >
-              Đôi Nét Về Thư Viện
+              Đôi nét về Thư Viện
             </h2>
+
             <p class="text-base text-muted-foreground leading-relaxed mb-4">
               Thư viện Đại Chủng Viện Thánh Giuse Sài Gòn được thành lập từ
               những năm đầu xây dựng Chủng viện. Nơi đây lưu giữ nguồn tri
@@ -290,7 +265,7 @@
               nghiên cứu.
             </p>
             <p class="text-base text-muted-foreground leading-relaxed mb-6">
-              Hiện tại, thư viện lưu trữ hơn 70.000 đầu sách bao gồm các bản
+              Hiện tại, thư viện lưu trữ hơn 70.000 cuốn sách bao gồm các bản
               văn cổ, từ điển ngôn ngữ, cùng các tạp chí chuyên ngành quốc tế.
             </p>
             <div class="not-prose flex justify-end">
@@ -309,40 +284,39 @@
     </div>
   </div>
 </section>
-            <!-- Library Hours & Schedule Details Section -->
- <!-- ====================== LỊCH PHỤC VỤ + 2 ẢNH ====================== -->
+      <!-- Library Hours & Schedule Details have image library Section -->
 <section class="relative py-20 lg:py-28 overflow-hidden">
   
   <div class="grid grid-cols-12 gap-8 items-center">
 
-    <!-- Cột trái: bảng lịch (giữ nội dung sếp) -->
+    <!--  Left:Hours & Schedule -->
     <div class="col-span-12 lg:col-span-6">
       <div
         class="glass-surface bg-card border border-border rounded-lg shadow-lg p-8 md:p-10 relative overflow-hidden"
       >
         <div class="prose mb-6">
           <h2
-            class="font-title-serif text-3xl font-bold tracking-tight mb-4 border-b border-border/60 pb-3"
+            class="font-title-serif text-4xl font-bold tracking-tight mb-4 border-b border-border/60 pb-3"
           >
             Lịch Phục Vụ Chi Tiết
           </h2>
         </div>
         <div class="space-y-3 text-sm text-card-foreground/90">
           <div class="flex justify-between py-2.5 border-b border-border/30">
-            <span class="font-semibold">Thứ Hai – Thứ Sáu</span>
-            <span class="font-mono text-yellow-900 font-medium">
+            <span class="font-semibold sm:text-xl">Thứ Hai – Thứ Sáu</span>
+            <span class="font-semibold sm:text-xltext-yellow-900 font-medium">
               8:00 AM - 11:00 AM | 2:00 PM - 4:30 PM
             </span>
           </div>
           <div class="flex justify-between py-2.5 border-b border-border/30">
-            <span class="font-semibold">Thứ Bảy</span>
-            <span class="font-mono text-yellow-900 font-medium">
+            <span class="font-semibold sm:text-xl">Thứ Bảy</span>
+            <span class="font-semibold sm:text-xltext-yellow-900 font-medium">
               8:00 AM - 11:30 AM
             </span>
           </div>
           <div class="flex justify-between py-2.5 text-muted-foreground">
-            <span class="font-semibold">Chúa Nhật & Ngày Lễ Công Giáo</span>
-            <span class="font-semibold text-yellow-700 text-destructive">
+            <span class="font-semibold sm:text-xl">Chúa Nhật & Ngày Lễ Công Giáo</span>
+            <span class="font-semibold sm:text-sm text-yellow-700 text-destructive">
               Tạm nghỉ
             </span>
           </div>
@@ -350,10 +324,9 @@
       </div>
     </div>
 
-    <!-- Cột phải: 2 ảnh nằm cạnh nhau (giống code cũ của bạn) -->
+    <!-- Right: 2 image library) -->
     <div class="col-span-12 lg:col-span-6">
       <div class="flex items-end justify-center gap-4 lg:gap-5">
-        <!-- Ảnh Bgr.jpg -->
         <div
           class="w-40 h-56 sm:w-48 sm:h-64 lg:w-56 lg:h-72 rounded-tl-2xl overflow-hidden
                  shadow-2xl border-2 border-white
@@ -367,7 +340,6 @@
             decoding="async"
           />
         </div>
-        <!-- Ảnh Books.jpg -->
         <div
           class="w-40 h-56 sm:w-48 sm:h-64 lg:w-56 lg:h-72 rounded-tr-2xl overflow-hidden
                  shadow-2xl border-2 border-white
@@ -407,16 +379,13 @@ useHead({
 });
 
 const heroBgSrc = ref(fallbackBg);
-
 const query = ref("");
 const { addSearch } = useSearchHistory();
-
 const onSearchSubmit = () => {
   if (query.value.trim()) {
     addSearch(query.value);
   }
 };
-
 const now = ref(new Date());
 let timer: ReturnType<typeof setInterval> | null = null;
 

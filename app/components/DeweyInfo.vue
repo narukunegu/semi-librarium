@@ -1,6 +1,4 @@
-<!-- components/DeweyInfo.vue -->
 <script setup lang="ts">
-// Nhận dữ liệu động từ trang cha (logic của sếp)
 defineProps<{
   formattedCurrentDate: string
   isOpen: boolean
@@ -9,12 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <!-- 
-    Khung DeweyInfo:
-    - Lùi xuống thấp hơn (bottom-6) để nằm giữa nền hero và khung trắng phía dưới
-    - Giữ hiệu ứng hover nổi lên
-    - 3 cột rõ ràng, có thanh gạch phân chia
-  -->
+  <!--  DeweyInfo-->
   <div
  class="absolute bottom-1 left-1/2 -translate-x-1/2 translate-y-1/2
          w-[92%] max-w-6xl bg-white/95 z-30 px-4 py-4 shadow-xl transition-shadow duration-100 ease-out
@@ -22,12 +15,12 @@ defineProps<{
   >
     <div class="flex flex-col sm:flex-row items-stretch">
 
-      <!-- ========== CỘT TRÁI: Dewey 000-499 ========== -->
+      <!-- Dewey 000-499-->
       <div class="flex-1 px-4 py-2 text-left">
         <h2 class="text-lg sm:text-xl font-bold text-yellow-700 mb-2">
           PHÂN LOẠI THEO DEWEY
         </h2>
-        <ul class="text-xs sm:text-sm space-y-0.5 text-gray-700">
+        <ul class="text-base font-semibold sm:text-sm space-y-0.5 text-gray-700">
           <li>000-099: Tác phẩm tổng quát</li>
           <li>100-199: Triết học & tâm lý</li>
           <li>200-299: Tôn giáo</li>
@@ -36,17 +29,16 @@ defineProps<{
         </ul>
       </div>
 
-      <!-- Thanh gạch phân chia 1 -->
       <div class="hidden sm:block w-px bg-yellow-500 self-stretch mx-2"></div>
 
-      <!-- ========== CỘT GIỮA: Ngày giờ + Trạng thái mở/đóng cửa ========== -->
+      <!-- Hours & Schedule: ON/OFF -->
       <div class="flex-1 px-4 py-2 flex flex-col items-center justify-center text-center">
-        <!-- Ngày hiện tại (động) -->
+        <!-- today) -->
         <p class="text-sm sm:text-base font-semibold text-blue-900 mb-2">
           {{ formattedCurrentDate }}
         </p>
 
-        <!-- Thông báo Mở cửa / Đóng cửa (động theo lịch sếp) -->
+        <!-- show hour ON/OFF -->
         <div>
           <span
             v-if="isOpen"
@@ -68,15 +60,14 @@ defineProps<{
         </div>
       </div>
 
-      <!-- Thanh gạch phân chia 2 -->
       <div class="hidden sm:block w-px bg-yellow-500 self-stretch mx-2"></div>
 
-      <!-- ========== CỘT PHẢI: Dewey 500-999 ========== -->
+      <!--  Dewey 500-999-->
       <div class="flex-1 px-4 py-2 text-left">
         <h2 class="text-lg sm:text-xl font-bold text-yellow-700 mb-2">
           PHÂN LOẠI THEO DEWEY
         </h2>
-        <ul class="text-xs sm:text-sm space-y-0.5 text-gray-700">
+        <ul class="text-base font-semibold sm:text-sm space-y-0.5 text-gray-700">
           <li>500-599: Khoa học tự nhiên</li>
           <li>600-699: Kỹ thuật</li>
           <li>700-799: Nghệ thuật</li>

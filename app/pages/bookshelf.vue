@@ -14,7 +14,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
   <div class="min-h-screen flex flex-col bg-[#f7f3ef] font-sans text-gray-800">
     <SiteHeader />
 
-    <!-- Khung tiêu đề: gần full page, không full, có bóng + hover -->
+    <!-- Box Title -->
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8 md:pt-10">
       <section
         class="relative rounded-2xl overflow-hidden bg-[#40596c]/90
@@ -42,7 +42,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
               </p>
             </div>
 
-            <!-- Thống kê nhỏ -->
+            <!-- Thống kê ấn phẩm -->
             <div class="flex items-center gap-3">
               <div class="bg-white/80 backdrop-blur border border-white/60 rounded-xl px-5 py-4 shadow-sm min-w-[100px] text-center">
                 <p class="text-2xl font-bold text-[#c1856f]">{{ savedBooks.length }}</p>
@@ -62,7 +62,6 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
       </section>
     </div>
 
-    <!-- Nội dung chính -->
     <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
       <!-- Empty state -->
       <div
@@ -89,7 +88,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
         </NuxtLink>
       </div>
 
-      <!-- Danh sách sách đã lưu -->
+      <!-- List book saved-->
       <div v-else class="space-y-4">
         <div class="flex items-center justify-between mb-2">
           <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">

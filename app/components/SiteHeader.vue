@@ -4,10 +4,8 @@ const mobileMenuOpen = ref(false);
 </script>
 
 <template>
-  <!-- Header chia 2 khung màu -->
   <header class="bg-[#e4d4ce] text-gray-800 shadow-md w-full z-50 relative overflow-hidden">
     
-    <!-- Khung màu cam đậm bên phải -->
     <div class="absolute top-0 right-0 w-72 md:w-88 h-full bg-[#c1856f]"></div>
 
     <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between relative z-10">
