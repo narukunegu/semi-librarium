@@ -707,8 +707,5 @@ const displayedPages = computed(() => {
         </div>
       </section>
     </main>
-
-    <!-- Footer Component -->
-    <SiteFooter />
   </div>
 </template>

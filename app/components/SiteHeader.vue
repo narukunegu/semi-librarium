@@ -4,12 +4,12 @@ const mobileMenuOpen = ref(false);
 </script>
 
 <template>
-  <header class="bg-[#e4d4ce] text-gray-800 shadow-md w-full z-50 relative overflow-hidden">
-    
-    <div class="absolute top-0 right-0 w-72 md:w-88 h-full bg-[#c1856f]"></div>
-
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between relative z-10">
-      
+  <header
+    class="bg-[#e4d4ce] text-gray-800 shadow-md w-full z-50 relative overflow-hidden"
+  >
+    <div
+      class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between relative z-10"
+    >
       <!-- Logo & Title -->
       <div class="flex items-center space-x-3">
         <NuxtLink
@@ -26,7 +26,7 @@ const mobileMenuOpen = ref(false);
 
       <!-- Navigation-->
       <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                <NuxtLink
+        <NuxtLink
           to="/"
           class="hover:text-[#c1856f] transition-colors pb-1"
           exactActiveClass="border-b-2 border-[#c1856f]"
@@ -59,9 +59,7 @@ const mobileMenuOpen = ref(false);
       <!-- Account & Mobile Menu Button -->
       <div class="flex items-center space-x-3 text-sm relative z-10">
         <NuxtLink
-          class="hidden sm:inline-flex items-center px-4 py-2 rounded-l bg-[#b06a52] text-white font-medium
-                 shadow-md hover:bg-[#9a5a45] hover:shadow-lg 
-                 transition-all duration-200"
+          class="hidden sm:inline-flex items-center px-4 py-2 rounded-l bg-[#b06a52] text-white font-medium shadow-md hover:bg-[#9a5a45] hover:shadow-lg transition-all duration-200"
           to="/bookshelf"
         >
           Kệ sách cá nhân
@@ -124,7 +122,6 @@ const mobileMenuOpen = ref(false);
       >
         Bài Viết
       </NuxtLink>
-
     </div>
   </header>
 </template>
