@@ -32,9 +32,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
             class="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
           >
             <div class="max-w-2xl">
-              <h1
-                class="font-serif text-3xl md:text-4xl font-bold text-[#D4AF37] mb-3"
-              >
+              <h1 class="text-3xl md:text-4xl font-bold text-[#D4AF37] mb-3">
                 Kệ sách cá nhân
               </h1>
               <p class="text-sm md:text-base text-white leading-relaxed">
@@ -125,7 +123,7 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
             <div class="min-w-0 space-y-1">
               <NuxtLink
                 :to="'/book-' + book['So Tai san']"
-                class="font-serif font-bold text-base md:text-lg text-[#35536c] hover:text-[#c1856f] hover:underline line-clamp-2 transition-colors"
+                class="font-bold text-base md:text-lg text-[#35536c] hover:text-[#c1856f] hover:underline line-clamp-2 transition-colors"
               >
                 {{ book.Tua }}
               </NuxtLink>

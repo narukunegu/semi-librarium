@@ -143,7 +143,7 @@ const scrollBy = (offset: number) => {
           <div class="flex-1 flex flex-col justify-between">
             <div>
               <h3
-                class="font-serif text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-[#c1856f] transition-colors"
+                class="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-[#c1856f] transition-colors"
               >
                 {{ book.Tua }}
               </h3>

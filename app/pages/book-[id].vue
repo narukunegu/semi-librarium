@@ -337,13 +337,17 @@ const handleBorrow = () => {
         <!-- Tab 0: Summary -->
         <div v-if="activeTab === 'summary'" class="p-6 md:p-8 space-y-6">
           <div class="prose max-w-none">
-            <h3 class="font-serif text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-slate-200">
+            <h3
+              class="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-slate-200"
+            >
               Tổng quan ấn phẩm
             </h3>
             <div v-if="book?.NS?.[0]?.GioiThieu" class="space-y-4">
-              <div class="relative bg-slate-50/70 border border-slate-200/80 rounded-xl p-6 md:p-8 shadow-2xs">
+              <div
+                class="relative bg-slate-50/70 border border-slate-200/80 rounded-xl p-6 md:p-8 shadow-2xs"
+              >
                 <p
-                  class="font-serif text-gray-800 text-lg leading-loose tracking-wide transition-all duration-300 text-justify"
+                  class="text-gray-800 text-lg leading-loose tracking-wide transition-all duration-300 text-justify"
                   :class="{ 'max-h-96 overflow-hidden': !isSummaryExpanded }"
                   style="white-space: pre-wrap"
                 >
@@ -354,12 +358,19 @@ const handleBorrow = () => {
                   class="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-slate-50 to-transparent pointer-events-none rounded-b-xl"
                 ></div>
               </div>
-              <div v-if="book.NS[0].GioiThieu.length > 350" class="text-center pt-2">
+              <div
+                v-if="book.NS[0].GioiThieu.length > 350"
+                class="text-center pt-2"
+              >
                 <button
                   @click="isSummaryExpanded = !isSummaryExpanded"
                   class="px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg shadow-sm transition inline-flex items-center gap-2"
                 >
-                  <span>{{ isSummaryExpanded ? 'Thu gọn giới thiệu' : 'Xem thêm toàn bộ giới thiệu' }}</span>
+                  <span>{{
+                    isSummaryExpanded
+                      ? "Thu gọn giới thiệu"
+                      : "Xem thêm toàn bộ giới thiệu"
+                  }}</span>
                   <svg
                     class="w-4 h-4 transition-transform"
                     :class="{ 'rotate-180': isSummaryExpanded }"
@@ -367,16 +378,37 @@ const handleBorrow = () => {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
               </div>
             </div>
-            <div v-else class="flex items-center space-x-2 text-sm text-slate-600 py-4">
-              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            <div
+              v-else
+              class="flex items-center space-x-2 text-sm text-slate-600 py-4"
+            >
+              <svg
+                class="w-5 h-5 text-amber-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
               </svg>
-              <span>Nội dung giới thiệu đang được cập nhật từ hệ thống thư viện.</span>
+              <span
+                >Nội dung giới thiệu đang được cập nhật từ hệ thống thư
+                viện.</span
+              >
             </div>
           </div>
         </div>
@@ -384,7 +416,7 @@ const handleBorrow = () => {
         <!-- Tab 1: Index -->
         <div v-if="activeTab === 'index'" class="p-6 md:p-8">
           <div v-if="book?.NS?.[0]?.MucLuc" class="prose max-w-none space-y-4">
-            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">
               Mục lục ấn phẩm
             </h3>
             <div class="relative">
@@ -455,7 +487,7 @@ const handleBorrow = () => {
           <div class="space-y-6">
             <div>
               <h4
-                class="font-serif text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-slate-200"
+                class="text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-slate-200"
               >
                 Thông tin Biên mục & Xuất bản
               </h4>
@@ -520,7 +552,7 @@ const handleBorrow = () => {
 
             <div>
               <h4
-                class="font-serif text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-slate-200"
+                class="text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-slate-200"
               >
                 Mã định danh & Phân loại
               </h4>
@@ -562,7 +594,7 @@ const handleBorrow = () => {
         <!-- Tab 3: Citation Generator -->
         <div v-if="activeTab === 'citation'" class="p-6 md:p-8 space-y-6">
           <div class="flex items-center justify-between">
-            <h3 class="font-serif text-lg font-bold text-gray-900">
+            <h3 class="text-lg font-bold text-gray-900">
               Định dạng trích dẫn học thuật
             </h3>
             <span

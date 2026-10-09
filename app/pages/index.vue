@@ -40,7 +40,7 @@
                 Đại Chủng Viện Thánh Giuse Sài Gòn
               </span>
               <h1
-                class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md"
+                class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md"
               >
                 Kho Tàng Tri Thức
               </h1>
@@ -99,9 +99,7 @@
                   >
                     Tài liệu
                   </span>
-                  <h2
-                    class="font-serif text-3xl font-bold tracking-tight text-gray-800"
-                  >
+                  <h2 class="text-3xl font-bold tracking-tight text-gray-800">
                     Danh Mục & Hướng Dẫn
                   </h2>
                 </div>
@@ -132,9 +130,7 @@
                         >
                           Hướng dẫn
                         </p>
-                        <h3
-                          class="font-serif text-2xl font-bold text-gray-900 mb-4"
-                        >
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">
                           Cách Tra Cứu Sách
                         </h3>
                         <p
@@ -175,9 +171,7 @@
                         >
                           Hướng dẫn
                         </p>
-                        <h3
-                          class="font-serif text-2xl font-bold text-white mb-4"
-                        >
+                        <h3 class="text-2xl font-bold text-white mb-4">
                           Cách Mượn & Trả Sách
                         </h3>
                         <p
@@ -218,9 +212,7 @@
                         >
                           Hướng dẫn
                         </p>
-                        <h3
-                          class="font-serif text-xl font-bold text-white mb-4"
-                        >
+                        <h3 class="text-xl font-bold text-white mb-4">
                           Truy Cập Tài Liệu Soạn Thảo
                         </h3>
                         <p
@@ -332,7 +324,7 @@
                 >
                   <span class="font-semibold sm:text-xl">Thứ Bảy</span>
                   <span class="sm:text-xltext-yellow-900 font-medium">
-                    8:00 AM - 11:30 AM
+                    8:00 AM - 11:00 AM
                   </span>
                 </div>
                 <div class="flex justify-between py-2.5 text-muted-foreground">
