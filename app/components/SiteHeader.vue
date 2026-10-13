@@ -25,7 +25,7 @@ const mobileMenuOpen = ref(false);
       </div>
 
       <!-- Navigation-->
-      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+      <nav class="hidden md:flex items-center space-x-6 text-l font-medium">
         <NuxtLink
           to="/"
           class="hover:text-[#c1856f] transition-colors pb-1"
@@ -45,7 +45,7 @@ const mobileMenuOpen = ref(false);
           class="hover:text-[#c1856f] transition-colors pb-1"
           exactActiveClass="border-b-2 border-[#c1856f]"
         >
-          Bài Viết
+          Thông tin
         </NuxtLink>
         <NuxtLink
           to="/about"
