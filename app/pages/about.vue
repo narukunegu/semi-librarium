@@ -56,7 +56,7 @@ useHead({
             Quy mô tài liệu
           </h2>
           <p class="text-gray-600 text-sm leading-relaxed">
-            Thư viện lưu trữ hơn 70.000 đầu sách đa dạng ngôn ngữ (Tiếng Việt,
+            Thư viện lưu trữ hơn 70.000 cuốn sách đa dạng ngôn ngữ (Tiếng Việt,
             Tiếng Pháp, Tiếng Anh, Latinh...), các bản văn cổ, từ điển chuyên
             ngành và các tạp chí thần học quốc tế uy tín.
           </p>
