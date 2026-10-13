@@ -5,8 +5,8 @@ export default {
       colors: {
         academic: {
           burgundy: "#7A1C1C",
-          gold: "#D4AF37",
-          slate: "#35536c",
+          gold: "#b1aea3",
+          slate: "#092d49",
           brown: "#914b32",
         }
       }
