@@ -64,9 +64,8 @@ useHead({
         </div>
       </div>
 
-      <!-- Schedule & Contact + Ảnh (ảnh lớn hơn khung, không nền) -->
+      <!-- Schedule & Contact + image -->
       <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
-        <!-- Trái 3/5: Lịch phục vụ & Liên hệ -->
         <div
           class="md:col-span-3 bg-[#40596c] text-white p-6 md:p-8 rounded-xl shadow-md space-y-3"
         >
