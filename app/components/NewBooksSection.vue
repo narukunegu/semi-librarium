@@ -38,7 +38,7 @@ const scrollBy = (offset: number) => {
   <section class="my-16 lg:my-24 container mx-auto px-4">
     <div class="text-center mb-10">
       <h2 class="text-xl sm:text-4xl font-bold text-yellow-900 mb-2">
-        Sách Mới
+        Giới Thiệu Sách Mới
       </h2>
       <div class="mx-auto mt-3 w-24 h-1 bg-[#c1856f] rounded-full"></div>
     </div>
