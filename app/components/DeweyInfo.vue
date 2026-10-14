@@ -9,9 +9,9 @@ defineProps<{
 <template>
   <!--  DeweyInfo-->
   <div
- class="absolute bottom-1 left-1/2 -translate-x-1/2 translate-y-1/2
-         w-[92%] max-w-7xl bg-white/95 z-30 px-4 py-4 shadow-xl transition-shadow duration-100 ease-out
-         hover:bg-white hover:shadow-xlhover:border-emerald-500/50 border border-gray-100 rounded-lg"
+ class="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-1/2
+         w-[92%] max-w-7xl bg-white/95 z-30 px-3 py-3 shadow-xl transition-shadow duration-100 ease-out
+         hover:bg-white hover:shadow-xl hover:border-emerald-400/90 border border-gray-100 rounded-lg"
   >
     <div class="flex flex-col sm:flex-row items-stretch">
 
@@ -40,7 +40,7 @@ defineProps<{
         <div>
           <span
             v-if="isOpen"
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-lg font-bold 
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-bold 
                    bg-emerald-500/15 text-emerald-700 border border-emerald-500/30"
           >
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-1.5"></span>
@@ -49,7 +49,7 @@ defineProps<{
 
           <span
             v-else
-            class="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-lg font-bold 
+            class="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-bold 
                    bg-rose-500/15 text-rose-700 border border-rose-500/30"
           >
             <span class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>
