@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
 import SiteFooter from "~/components/SiteFooter.vue";
+import oldTempleImg from "~/assets/images/oldtempleS.png";
 
 useHead({
   title: "Giới Thiệu | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
@@ -63,27 +64,39 @@ useHead({
         </div>
       </div>
 
-      <!-- Schedule & Contact Info -->
-      <div class="bg-[#40596c] text-white p-8 rounded-xl shadow-md space-y-4">
-        <h2 class="text-2xl font-bold text-amber-200">
-          Lịch phục vụ & Liên hệ
-        </h2>
-        <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-200">
-          <div>
-            <strong class="text-white block mb-1">Thời gian mở cửa:</strong>
-            <p>Thứ Hai – Thứ Sáu: 8:00 - 11:00 | 14:00 - 16:30</p>
-            <p>Thứ Bảy: 8:00 - 11:30</p>
-            <p class="text-amber-300 mt-1">Chúa Nhật & Ngày Lễ: Tạm Nghỉ</p>
+      <!-- Schedule & Contact + Ảnh (ảnh lớn hơn khung, không nền) -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+        <!-- Trái 3/5: Lịch phục vụ & Liên hệ -->
+        <div
+          class="md:col-span-3 bg-[#40596c] text-white p-6 md:p-8 rounded-xl shadow-md space-y-3"
+        >
+          <h2 class="text-2xl font-bold text-amber-200">
+            Lịch phục vụ & Liên hệ
+          </h2>
+          <div class="grid sm:grid-cols-2 gap-4 text-sm text-slate-200">
+            <div>
+              <strong class="text-white block mb-1">Thời gian mở cửa:</strong>
+              <p>Thứ Hai – Thứ Sáu: 8:00 - 11:00 | 14:00 - 16:30</p>
+              <p>Thứ Bảy: 8:00 - 11:30</p>
+              <p class="text-amber-300 mt-1">Chúa Nhật & Ngày Lễ: Tạm Nghỉ</p>
+            </div>
+            <div>
+              <strong class="text-white block mb-1">Địa chỉ:</strong>
+              <p>6 Tôn Đức Thắng, P. Sài gòn, TP. Hồ Chí Minh</p>
+            </div>
           </div>
-          <div>
-            <strong class="text-white block mb-1">Địa chỉ:</strong>
-            <p>6 Tôn Đức Thắng, P. Sài gòn, TP. Hồ Chí Minh</p>
-          </div>
+        </div>
+
+        <div class="md:col-span-2 flex items-center justify-center -my-6 md:-my-10">
+          <img
+            :src="oldTempleImg"
+            alt="Đại Chủng Viện Thánh Giuse Sài Gòn"
+            class="w-full max-h-[440px] md:max-h-[480px] object-contain"
+            decoding="async"
+          />
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
     <SiteFooter />
   </div>
 </template>
