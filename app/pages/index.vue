@@ -10,11 +10,11 @@
       class="flex-1"
     >
       <!-- Hero & Catalogue Search Section (Chỉnh sửa phủ kín 1 màn hình viewport, background) -->
-          <section
+    <section
         class="relative z-0 min-h-[calc(100svh-4rem)] flex flex-col justify-between pb-24"
       >
         <div
-          class="absolute -z-10 top-0 bottom-24 left-0 w-full overflow-hidden"
+          class="absolute -z-10 top-0 bottom-28 left-0 w-full overflow-hidden"
         >
           <img
             alt="Hero Background"
@@ -43,7 +43,7 @@
                 Kho Tàng Tri Thức
               </h1>
               <p
-                class="text-base sm:text-lg text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
+                class="text-base sm:text-l italic text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
               >
                 Tra cứu hơn 70.000 cuốn sách, tài liệu và ấn bản chuyên khảo
                 phục vụ học tập & nghiên cứu.
@@ -77,7 +77,6 @@
         <div
           class="absolute top-0 left-0 right-0 h-[67%] bg-[#e4d4ce] shadow-[0_8px_25px_rgba(0,0,0,0.08)]"
         ></div>
-        <!-- Pattern nhẹ -->
         <div
           class="absolute inset-0 opacity-10 pointer-events-none z-[1]"
           style="
@@ -181,7 +180,7 @@
                          <p class="text-l font-bold text-black/100 leading-relaxed ">Trả Sách: </p>
                             <ul class="list-disc pl-1 space-y-0 text-sm font-medium text-black/95 leading-relaxed">
                              <li>Trả ít nhất 2 cuốn trước khi mượn lại.</li>
-                             <li>Có thể gia hạn nếu chưa có độc giả khác cần mượn.</li>
+                             <li>Có thể gia hạn nếu chưa có độc giả khác mượn.</li>
                             </ul>
                       </div>
                       <div class="flex justify-end pt-8">
