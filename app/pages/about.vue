@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SiteHeader from "~/components/SiteHeader.vue";
 import SiteFooter from "~/components/SiteFooter.vue";
-import oldTempleImg from "~/assets/images/oldtempleS.png";
+import oldTempleImg from "~/assets/images/oldtempleS.webp";
 
 useHead({
   title: "Giới Thiệu | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
@@ -76,7 +76,7 @@ useHead({
             <div>
               <strong class="text-white block mb-1">Thời gian mở cửa:</strong>
               <p>Thứ Hai – Thứ Sáu: 8:00 - 11:00 | 14:00 - 16:30</p>
-              <p>Thứ Bảy: 8:00 - 11:30</p>
+              <p>Thứ Bảy: 8:00 - 11:00</p>
               <p class="text-amber-300 mt-1">Chúa Nhật & Ngày Lễ: Tạm Nghỉ</p>
             </div>
             <div>
@@ -86,7 +86,9 @@ useHead({
           </div>
         </div>
 
-        <div class="md:col-span-2 flex items-center justify-center -my-6 md:-my-10">
+        <div
+          class="md:col-span-2 flex items-center justify-center -my-6 md:-my-10"
+        >
           <img
             :src="oldTempleImg"
             alt="Đại Chủng Viện Thánh Giuse Sài Gòn"

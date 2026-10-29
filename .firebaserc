@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "lustrous-maxim-379408"
-  }
+    "default": "lustrous-maxim-379408",
+    "plan-b": "gen-lang-client-0374656179"
+  },
+  "targets": {},
+  "etags": {}
 }

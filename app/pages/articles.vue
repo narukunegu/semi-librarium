@@ -2,7 +2,7 @@
 // Import header & footer dùng chung toàn site
 import SiteHeader from "~/components/SiteHeader.vue";
 import SiteFooter from "~/components/SiteFooter.vue";
-import oldTempleImg from "~/assets/images/oldtempleS.png";
+import oldTempleImg from "~/assets/images/oldtempleS.webp";
 useHead({
   title: "Bài Viết & Hướng Dẫn | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
 });

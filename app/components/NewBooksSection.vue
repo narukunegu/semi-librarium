@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import type { BookItem } from "~/types/book";
 import BookCoverImage from "~/components/BookCoverImage.vue";
+import sampleBooksData from "~/assets/data/books.json";
 
 const scrollContainer = ref<HTMLElement | null>(null);
 
@@ -10,20 +11,30 @@ const {
   pending,
   error,
 } = await useAsyncData<BookItem[]>("new-books-carousel", async () => {
+  // Create a timeout promise to prevent hanging when external API is offline
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
   try {
     const response = await $fetch<any>(
       "//data.dcvgiusesaigon.vn/api/books/new",
+      {
+        signal: controller.signal,
+      }
     );
-    if (Array.isArray(response)) {
+    clearTimeout(timeoutId);
+    if (Array.isArray(response) && response.length > 0) {
       return response;
     }
-    if (response && Array.isArray(response.books)) {
+    if (response && Array.isArray(response.books) && response.books.length > 0) {
       return response.books;
     }
-    return [];
+    throw new Error("Empty response");
   } catch (e) {
-    // Fallback sample data if API is unreachable
-    return [];
+    clearTimeout(timeoutId);
+    // Fallback to local sample books data so page never hangs or shows blank
+    const fallbackList = sampleBooksData.books?.map((b: any) => b.item) || [];
+    return fallbackList.slice(0, 10);
   }
 });
 

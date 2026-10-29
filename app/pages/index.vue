@@ -394,12 +394,12 @@ import QuickSearchTags from "~/components/QuickSearchTags.vue";
 import LibrarySearchBar from "~/components/LibrarySearchBar.vue";
 import NewBooksSection from "~/components/NewBooksSection.vue";
 import { useSearchHistory } from "~/composables/useSearchHistory";
-import fallbackBg from "~/assets/images/temple.png";
+import fallbackBg from "~/assets/images/temple.webp";
 import SiteFooter from "~/components/SiteFooter.vue";
-import bgreek from "~/assets/images/greekpage.jpg";
-import bgrImg from "~/assets/images/Bgr.jpg";
-import booksImg from "~/assets/images/Books.jpg";
-import serSImg from "~/assets/images/SerS.png";
+import bgreek from "~/assets/images/greekpage.webp";
+import bgrImg from "~/assets/images/Bgr.webp";
+import booksImg from "~/assets/images/Books.webp";
+import serSImg from "~/assets/images/SerS.webp";
 
 useHead({
   title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
