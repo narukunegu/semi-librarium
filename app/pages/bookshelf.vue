@@ -37,12 +37,11 @@ const { savedBooks, toggleSaveBook } = useResearchShelf();
               </h1>
               <p class="text-sm md:text-base text-white leading-relaxed">
                 Lưu trữ và quản lý các ấn phẩm phục vụ nghiên cứu. Nhấn
-                <strong>“Lưu vào kệ sách”</strong> ở trang chi tiết để thêm sách
+                <strong>“Lưu vào kệ sách”</strong> ở góc phải trang chi tiết sách để thêm sách
                 vào đây.
               </p>
               <p class="mt-2 text-s italic text-white/90">
-                Lưu ý: danh sách chỉ lưu trên trình duyệt máy này (đổi máy sẽ
-                không còn).
+                Lưu ý: danh sách chỉ lưu trên trình duyệt máy cá nhân (sách đã lưu không tự động chuyển qua máy khác khi đổi máy)
               </p>
             </div>
 

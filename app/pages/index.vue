@@ -10,32 +10,30 @@
       class="flex-1"
     >
       <!-- Hero & Catalogue Search Section (Chỉnh sửa phủ kín 1 màn hình viewport, background) -->
-      <section
-        class="relative z-0 min-h-screen flex flex-col justify-between pb-12"
+    <section
+        class="relative z-0 min-h-[calc(100svh-4rem)] flex flex-col justify-between pb-24"
       >
-        <!-- Background Hero Image with Subtle Blur Overlay -->
         <div
-          class="absolute -z-10 top-0 bottom-10 left-0 w-full h-full overflow-hidden"
+          class="absolute -z-10 top-0 bottom-28 left-0 w-full overflow-hidden"
         >
           <img
             alt="Hero Background"
             fetchpriority="high"
             decoding="async"
-            class="object-cover w-full h-full transition-transform duration-700 ease-out hover:scale-100"
+            class="object-cover object-[center_45%] w-full h-full transition-transform duration-700 ease-out"
             :src="heroBgSrc"
           />
           <div
             class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"
           ></div>
         </div>
-
         <div
-          class="container mx-auto px-4 flex-1 flex flex-col items-center justify-center pt-24 pb-12 text-center"
+          class="container mx-auto px-4 flex-1 flex flex-col items-center justify-center pt-16 pb-4 text-center"
         >
-          <div class="w-full max-w-2xl animate-launch space-y-6">
+          <div class="w-full max-w-2xl animate-launch space-y-4">
             <div class="space-y-2">
               <span
-                class="inline-block px-3 py-1 rounded-full text-sm font-semibold tracking-widest uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-2"
+                class="inline-block px-3 py-1 rounded-full text-sm font-semibold tracking-widest uppercase bg-amber-500/15 text-amber-300 border border-amber-500/30 mb-1"
               >
                 Đại Chủng Viện Thánh Giuse Sài Gòn
               </span>
@@ -45,7 +43,7 @@
                 Kho Tàng Tri Thức
               </h1>
               <p
-                class="text-base sm:text-lg text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
+                class="text-base sm:text-l italic text-slate-200/90 max-w-xl mx-auto font-sans leading-relaxed"
               >
                 Tra cứu hơn 70.000 cuốn sách, tài liệu và ấn bản chuyên khảo
                 phục vụ học tập & nghiên cứu.
@@ -58,11 +56,11 @@
               @submit="onSearchSubmit"
             />
 
-            <!-- Quick Suggestion Tags / Pills -->
             <QuickSearchTags />
           </div>
         </div>
-        <!-- ====================== DEWEY INFO + Hours & Location Bar  ====================== -->
+
+        <!-- Dewey -->
         <div class="container mx-auto px-2 relative z-20">
           <DeweyInfo
             :formatted-current-date="formattedCurrentDate"
@@ -79,7 +77,6 @@
         <div
           class="absolute top-0 left-0 right-0 h-[67%] bg-[#e4d4ce] shadow-[0_8px_25px_rgba(0,0,0,0.08)]"
         ></div>
-        <!-- Pattern nhẹ -->
         <div
           class="absolute inset-0 opacity-10 pointer-events-none z-[1]"
           style="
@@ -95,11 +92,11 @@
               >
                 <div class="prose">
                   <span
-                    class="text-xs uppercase font-bold tracking-widest text-gray-600 mb-1 block"
+                    class="text-sm uppercase font-bold tracking-widest text-gray-600 mb-1 block"
                   >
                     Tài liệu
                   </span>
-                  <h2 class="text-3xl font-bold tracking-tight text-gray-800">
+                  <h2 class="text-4xl font-bold tracking-tight text-gray-800">
                     Danh Mục & Hướng Dẫn
                   </h2>
                 </div>
@@ -126,20 +123,20 @@
                     <div class="relative z-10 flex flex-col flex-1 p-8 lg:p-10">
                       <div class="flex-1">
                         <p
-                          class="text-xs uppercase tracking-widest text-gray-500 mb-2"
+                          class="text-xs uppercase tracking-widest text-gray-500"
                         >
                           Hướng dẫn
                         </p>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4">
-                          Cách Tra Cứu Sách
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">
+                          Tra Cứu Sách
                         </h3>
-                        <p
-                          class="text-sm font-medium text-gray-700 leading-relaxed"
-                        >
-                          Sử dụng hệ thống tra cứu trực tuyến (OPAC) để nhanh
-                          chóng tìm kiếm theo tên tác phẩm, tác giả, chủ đề hoặc
-                          mã phân loại Dewey/SBC.
-                        </p>
+                        <p class="text-sm font-medium text-gray-700 leading-relaxed italic">Sách được xếp theo hệ thập phân Dewey từ 001-999</p>
+                        <p class="text-sm font-sans font-bold text-black/95 underline leading-relaxed"> Để xác định vị trí sách, độc giả có thể: </p>
+                         <ul class="list-disc pl-1 space-y-0 text-sm mb-2 font-medium text-black/95 leading-relaxed"> 
+                           <li> Xem bảng chỉ dẫn ở mỗi kệ</li>
+                            <li> Tra cứu trên trang <strong class="text-[#7A1C1C]">WEBSITE </strong> của Thư Viện</li>
+                         </ul>
+                      <p class="text-sm font-sans font-medium text-black/95 leading-relaxed ">Nếu muốn mượn sách về, Xin quý độc giả ghi phiếu mượn sách và đặt vào đúng vị trí sách đã lấy ra.</p>
                       </div>
                       <div class="flex justify-end pt-8">
                         <NuxtLink
@@ -162,25 +159,29 @@
                       class="absolute inset-0 w-full h-full object-cover opacity-20"
                       src="https://biblioteca.biblico.it/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhome-library-use-img-2.d7e2e367.jpg&w=3840&q=75"
                     />
-                    <div class="absolute inset-0 bg-[#c1856f]/70"></div>
+                    <div class="absolute inset-0 bg-[#c1856f]/65"></div>
 
                     <div class="relative z-10 flex flex-col flex-1 p-8 lg:p-10">
                       <div class="flex-1">
                         <p
-                          class="text-xs uppercase tracking-widest text-white/70 mb-2"
+                          class="text-xs uppercase tracking-widest text-black/70"
                         >
                           Hướng dẫn
                         </p>
-                        <h3 class="text-2xl font-bold text-white mb-4">
+                        <h3 class="text-2xl font-bold text-black mb-2">
                           Cách Mượn & Trả Sách
                         </h3>
-                        <p
-                          class="text-sm font-medium text-black/95 leading-relaxed"
-                        >
-                          Độc giả xuất trình thẻ thư viện tại bàn thủ thư. Quy
-                          định gia hạn và giới hạn số lượng tài liệu được cập
-                          nhật công khai tại quầy phục vụ.
-                        </p>
+                    
+                         <p class="text-l font-bold text-black/100 leading-relaxed ">Mượn Sách </p>
+                         <ul class="list-disc pl-1 space-y-0 text-sm font-medium text-black/95 leading-relaxed"> 
+                           <li> Độc giả muốn mượn sách về cần phải có thẻ do Thư Viện của Đại Chủng Viện cấp.</li>
+                            <li> Mỗi lần mượn 5 cuốn, thời gian mượn 15 ngày. Đối với từ điển và các loại sách tra cứu quý hiếm, chỉ được tham khảo tại chỗ.</li>
+                         </ul>
+                         <p class="text-l font-bold text-black/100 leading-relaxed ">Trả Sách: </p>
+                            <ul class="list-disc pl-1 space-y-0 text-sm font-medium text-black/95 leading-relaxed">
+                             <li>Trả ít nhất 2 cuốn trước khi mượn lại.</li>
+                             <li>Có thể gia hạn nếu chưa có độc giả khác mượn.</li>
+                            </ul>
                       </div>
                       <div class="flex justify-end pt-8">
                         <NuxtLink
@@ -208,24 +209,20 @@
                     <div class="relative z-10 flex flex-col flex-1 p-8 lg:p-10">
                       <div class="flex-1">
                         <p
-                          class="text-xs uppercase tracking-widest text-white/70 mb-2"
+                          class="text-xs uppercase tracking-widest text-white/70 mb-0"
                         >
                           Hướng dẫn
                         </p>
-                        <h3 class="text-xl font-bold text-white mb-4">
-                          Truy Cập Tài Liệu Soạn Thảo
-                        </h3>
-                        <p
-                          class="text-sm font-medium text-white/95 leading-relaxed"
-                        >
-                          Hướng dẫn đăng ký tài khoản tra cứu cơ sở dữ liệu số,
-                          tiếp cận tài liệu số hóa và các phòng đọc chuyên đề
-                          tại thư viện.
-                        </p>
+                        <h3 class="text-2xl font-bold text-white/90 mb-4"> Sử Dụng Kệ Sách Cá Nhân</h3>
+                       <ul class="list-disc pl-1 space-y-0 text-sm font-medium text-white/90 leading-relaxed"> 
+                           <li> Chọn vào tên sách muốn mượn để chuyển đến trang chi tiết sách.</li>
+                            <li>Nhấn “Lưu vào kệ sách” ở góc phải để thêm sách vào Kệ Sách Cá Nhân</li>
+                         </ul>
+                      <li class="space-y-0 text-sm font-medium text-white/90 leading-relaxed italic">Lưu ý: danh sách chỉ lưu trên trình duyệt máy cá nhân (sách đã lưu không tự động chuyển qua máy khác khi đổi máy)</li>
                       </div>
                       <div class="flex justify-end pt-8">
                         <NuxtLink
-                          to="/articles"
+                          to="/bookshelf"
                           class="inline-flex items-center justify-center text-sm font-medium bg-white text-[#4a4458] h-10 px-5 shadow-sm hover:bg-gray-50 transition-colors"
                         >
                           Chi tiết
@@ -239,56 +236,72 @@
           </div>
         </div>
       </section>
-      <!-- About & Overview Lib Section (Bổ sung Pattern Background) -->
-      <section
-        class="relative py-20 lg:py-28 overflow-hidden"
-        :style="{
-          backgroundImage: `url(${bgreek})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }"
-      >
-        <div class="absolute inset-0 bg-white/70"></div>
+      <!-- About & Overview Lib Section (Bổ sung image temple) -->
+      <section class="relative py-12 lg:py-16 overflow-hidden bg-[#faf6f1]">
+        <div class="relative z-10 container mx-auto px-4">
+          <div
+            class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-stretch"
+          >
+            <div
+              class="lg:col-span-2 relative rounded-xl overflow-hidden border border-[#faf6f1]"
+            >
+              <img
+                :src="serSImg"
+                alt="Đại Chủng Viện Thánh Giuse Sài Gòn"
+                class="w-full h-full min-h-[320px] lg:min-h-[380px] object-cover"
+                decoding="async"
+              />
+            </div>
 
-        <div class="container mx-auto px-4 relative z-10">
-          <div class="grid grid-cols-12 gap-6 items-center">
-            <div class="col-span-12 lg:col-span-10 lg:col-start-2">
+            <div class="lg:col-span-3 flex flex-col justify-between gap-4">
               <div
-                class="p-8 md:p-12 rounded-lg bg-white/90 border border-border shadow-md hover:shadow-lg transition-all duration-300"
+                class="flex-1 p-6 md:p-8 rounded-xl
+                       bg-white/25 backdrop-blur-[2px]
+                       border border-white/30 shadow-sm"
               >
-                <div class="prose max-w-none text-foreground">
-                  <h2
-                    class="text-center text-xl sm:text-3xl font-bold text-yellow-900 mb-2"
+                <h2
+                  class="text-3xl sm:text-4xl font-bold text-[#5c3d2e] mb-3 text-center lg:text-left"
+                >
+                  Đôi nét về Thư Viện
+                </h2>
+                <p
+                  class="text-xl md:text-base text-gray-900 font-medium leading-relaxed mb-3"
+                >
+                  Thư viện Đại Chủng Viện Thánh Giuse Sài Gòn được thành lập từ
+                  những năm đầu xây dựng Chủng viện. Nơi đây lưu giữ nguồn tri
+                  thức Kitô giáo, Triết học và Thần học phong phú, phục vụ công
+                  tác đào tạo và nghiên cứu chuyên sâu cho chủng sinh và các nhà
+                  nghiên cứu.
+                </p>
+                <p
+                  class="text-sm md:text-base text-gray-900 font-medium leading-relaxed mb-5"
+                >
+                  Hiện tại, thư viện lưu trữ hơn 70.000 cuốn sách bao gồm các bản
+                  văn cổ, từ điển ngôn ngữ, cùng các tạp chí chuyên ngành quốc tế.
+                </p>
+                <div class="flex justify-end">
+                  <NuxtLink
+                    to="/about"
+                    class="inline-flex items-center justify-center rounded-sm text-sm font-semibold
+                           tracking-wide transition-all duration-200
+                           bg-[#c1856f] text-white hover:bg-[#a86f5a]
+                           h-10 px-5 shadow-sm active:scale-95"
                   >
-                    Đôi nét về Thư Viện
-                  </h2>
-
-                  <p
-                    class="text-base text-muted-foreground leading-relaxed mb-4"
-                  >
-                    Thư viện Đại Chủng Viện Thánh Giuse Sài Gòn được thành lập
-                    từ những năm đầu xây dựng Chủng viện. Nơi đây lưu giữ nguồn
-                    tri thức Kitô giáo, Triết học và Thần học phong phú, phục vụ
-                    công tác đào tạo và nghiên cứu chuyên sâu cho chủng sinh và
-                    các nhà nghiên cứu.
-                  </p>
-                  <p
-                    class="text-base text-muted-foreground leading-relaxed mb-6"
-                  >
-                    Hiện tại, thư viện lưu trữ hơn 70.000 cuốn sách bao gồm các
-                    bản văn cổ, từ điển ngôn ngữ, cùng các tạp chí chuyên ngành
-                    quốc tế.
-                  </p>
-                  <div class="not-prose flex justify-end">
-                    <NuxtLink
-                      to="/about"
-                      class="inline-flex items-center justify-center rounded-sm text-sm font-semibold tracking-wide transition-all duration-200 bg-[#c1856f] text-white hover:bg-[#a86f5a] h-11 px-6 py-2 shadow-sm active:scale-95"
-                    >
-                      Tìm hiểu thêm
-                    </NuxtLink>
-                  </div>
+                    Tìm hiểu thêm
+                  </NuxtLink>
                 </div>
               </div>
+
+              <!-- Slogan DCV-->
+              <p
+                class="text-center lg:text-left text-base md:text-lg font-title-serif
+                       italic text-[#5c463a] leading-snug px-1"
+              >
+                «Tôi sống, nhưng không còn phải là tôi, mà là Đức Kitô sống trong tôi»
+                <span class="block text-sm text-center not-italic text-[#8b7355] mt-1">
+                  — GL 2,20-
+                </span>
+              </p>
             </div>
           </div>
         </div>
@@ -332,7 +345,7 @@
                     >Chúa Nhật & Ngày Lễ Công Giáo</span
                   >
                   <span
-                    class="font-semibold sm:text-sm text-yellow-700 text-destructive"
+                    class="font-semibold sm:text-lg text-yellow-700 text-destructive"
                   >
                     Tạm nghỉ
                   </span>
@@ -355,7 +368,8 @@
                 />
               </div>
               <div
-                class="w-40 h-56 sm:w-48 sm:h-64 lg:w-56 lg:h-72 rounded-tr-2xl overflow-hidden shadow-2xl border-2 border-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-out"
+                class="w-40 h-56 sm:w-48 sm:h-64 lg:w-56 lg:h-72 rounded-tr-2xl overflow-hidden 
+                shadow-2xl border-2 border-white hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 ease-out"
               >
                 <img
                   :src="booksImg"
@@ -385,6 +399,7 @@ import SiteFooter from "~/components/SiteFooter.vue";
 import bgreek from "~/assets/images/greekpage.jpg";
 import bgrImg from "~/assets/images/Bgr.jpg";
 import booksImg from "~/assets/images/Books.jpg";
+import serSImg from "~/assets/images/SerS.png";
 
 useHead({
   title: "Trang Chủ | Thư Viện Đại Chủng Viện Thánh Giuse Sài Gòn",
